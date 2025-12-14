@@ -46,12 +46,29 @@ const siteData = {
       { title: "Mobilité internationale en Suède", period: "Juin 2025 à août 2025", company: "Manoir de Melderstein, Råneå", details: "Participation à des travaux variés de rénovation et d’entretien du manoir de Melderstein en Suède, incluant la peinture, l’entretien des extérieurs et d’autres missions polyvalentes.", skills: ["Polyvalence","Autonomie","Rénovation","Maintenance extérieure"] }
     ],
     skills: [
-      { category: 'Mécanique', color: '#00b894', items: ['SolidWorks', 'Abaqus'] },
-      { category: 'Informatique', color: '#6c5ce7', items: ['Python', 'C', 'Java','Ladder'] },
-      { category: 'Électronique', color: '#e17055', items: ['Électrotechnique', 'Conception de PCB','EAGLE','KiCad'] },
-      { category: 'Bureautique', color: '#00ce45ff', items: ['LaTeX','Excel', 'Word', 'PowerPoint'] },
-      { category: 'Soft skills', color: '#00cec9', items: ['Travail en équipe', 'Autonomie', 'Communication'] }
-      
+      { category: 'Mécanique', color: '#00b894', sub: [
+        { label: 'CAO', items: ['SolidWorks'] },
+        { label: 'Simulation', items: ['Abaqus'] }
+      ]},
+      { category: 'Électronique & Systèmes Embarqués', color: '#e17055', sub: [
+        { label: 'Cartes & I/O', items: ['Arduino'] },
+        { label: 'Conception PCB', items: ['EAGLE','KiCad'] }
+      ]},
+      { category: 'Automatisme & Industriel', color: '#fd79a8', sub: [
+        { label: 'Automates', items: ['Automates programmables','Réseaux industriels'] },
+        { label: 'Langage', items: ['Ladder'] }
+      ]},
+      { category: 'Informatique', color: '#6c5ce7', sub: [
+        { label: 'Langages', items: ['Python','C','Java'] }
+      ]},
+      { category: 'Bureautique', color: '#00ce45ff', sub: [
+        { label: 'Suite Office', items: ['Excel','Word','PowerPoint'] },
+        { label: 'Publication', items: ['LaTeX'] }
+      ]},
+      { category: 'Soft skills', color: '#00cec9', sub: [
+        { label: 'Collaboration', items: ['Travail en équipe','Communication'] },
+        { label: 'Autonomie', items: ['Autonomie'] }
+      ]}
     ]
   },
   en: {
@@ -98,11 +115,29 @@ const siteData = {
       { title: "International mobility in Sweden", period: "June 2025 to August 2025", company: "Melderstein Manor, Råneå", details: "Participation in various renovation and maintenance tasks at Melderstein Manor in Sweden, including painting, exterior maintenance, and other versatile missions.", skills: ["Adaptability","Autonomy","Renovation","Outdoor maintenance"] }
     ],
     skills: [
-      { category: 'Mechanics', color: '#00b894', items: ['SolidWorks', 'Abaqus'] },
-      { category: 'IT', color: '#6c5ce7', items: ['Python', 'C', 'Java','Ladder'] },
-      { category: 'Electronics', color: '#e17055', items: ['Electrotechnics', 'PCB Design','EAGLE','KiCad'] },
-      { category: 'Office', color: '#00ce45ff', items: ['LaTeX','Excel','Word','PowerPoint'] },
-      { category: 'Soft skills', color: '#00cec9', items: ['Teamwork', 'Autonomy', 'Communication'] }
+      { category: 'Mechanics', color: '#00b894', sub: [
+        { label: 'CAD', items: ['SolidWorks'] },
+        { label: 'Simulation', items: ['Abaqus'] }
+      ]},
+      { category: 'Electronics & Embedded', color: '#e17055', sub: [
+        { label: 'Boards & I/O', items: ['Arduino'] },
+        { label: 'PCB Design', items: ['EAGLE','KiCad'] }
+      ]},
+      { category: 'Automation & Industrial', color: '#fd79a8', sub: [
+        { label: 'PLCs', items: ['Programmable logic controllers','Industrial networks'] },
+        { label: 'Language', items: ['Ladder'] }
+      ]},
+      { category: 'IT', color: '#6c5ce7', sub: [
+        { label: 'Languages', items: ['Python','C','Java'] }
+      ]},
+      { category: 'Office', color: '#00ce45ff', sub: [
+        { label: 'Productivity', items: ['Excel','Word','PowerPoint'] },
+        { label: 'Typesetting', items: ['LaTeX'] }
+      ]},
+      { category: 'Soft skills', color: '#00cec9', sub: [
+        { label: 'Collaboration', items: ['Teamwork','Communication'] },
+        { label: 'Autonomy', items: ['Autonomy'] }
+      ]}
     ]
   }
 };
@@ -224,11 +259,32 @@ function renderSkills() {
     const header = document.createElement('div');
     header.className = 'skill-group-header';
     header.innerHTML = `<span class="skill-accent-dot" aria-hidden="true"></span><span>${group.category}</span>`;
-    const chips = document.createElement('div'); chips.className = 'skill-chips';
-    group.items.forEach(it => {
-      const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = it; chips.appendChild(chip);
-    });
-    card.appendChild(header); card.appendChild(chips);
+    card.appendChild(header);
+
+    if (Array.isArray(group.sub) && group.sub.length) {
+      group.sub.forEach(sub => {
+        const block = document.createElement('div');
+        block.className = 'skill-subblock';
+        if (sub.label) {
+          const label = document.createElement('div');
+          label.className = 'skill-subtitle';
+          label.textContent = sub.label;
+          block.appendChild(label);
+        }
+        const chips = document.createElement('div'); chips.className = 'skill-chips';
+        (sub.items || []).forEach(it => {
+          const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = it; chips.appendChild(chip);
+        });
+        block.appendChild(chips);
+        card.appendChild(block);
+      });
+    } else if (Array.isArray(group.items) && group.items.length) {
+      const chips = document.createElement('div'); chips.className = 'skill-chips';
+      group.items.forEach(it => {
+        const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = it; chips.appendChild(chip);
+      });
+      card.appendChild(chips);
+    }
     skillsGrid.appendChild(card);
   });
 }

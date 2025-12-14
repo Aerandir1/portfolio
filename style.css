@@ -318,6 +318,8 @@ body.dark .skill-group-header{ color:#7fd8ff; }
 }
 body.dark .chip{color:#e6eef9;border-color:color-mix(in oklab, var(--accent,#7fd8ff) 55%, transparent);background:color-mix(in oklab, var(--accent,#7fd8ff) 18%, transparent)}
 body.dark .skill-group{background:#121a22;border-color:rgba(255,255,255,.06);box-shadow:none}
+.skill-subblock{margin-top:6px}
+.skill-subtitle{font-weight:700;color:var(--muted);margin-bottom:6px;font-size:0.95rem}
 .skill-note{color:var(--muted);font-size:0.95rem;margin-top:10px}
 
 /* ========================= Contact */
