@@ -318,9 +318,15 @@ function initSectionToggles() {
     // Accessible attributes
     header.setAttribute('role','button');
     header.setAttribute('tabindex','0');
-    // Start collapsed by default
-    header.setAttribute('aria-expanded','false');
-    section.classList.add('collapsed');
+    // Start expanded for About; others collapsed by default
+    const isAbout = section.classList.contains('about');
+    if (isAbout) {
+      header.setAttribute('aria-expanded','true');
+      section.classList.remove('collapsed');
+    } else {
+      header.setAttribute('aria-expanded','false');
+      section.classList.add('collapsed');
+    }
     // Click handler
     header.addEventListener('click', () => {
       const collapsed = section.classList.toggle('collapsed');
