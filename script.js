@@ -38,12 +38,12 @@ const siteData = {
       }
     ],
     diplomas: [
-      { title: "Diplôme d'ingénieur en mécatronique", year: "2022-2027", institution: "ENSIBS Lorient", details: "" },
-      { title: "Baccalauréat Général", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Spécialités : Mathématiques, Physique-Chimie et Sciences de la Vie et de la Terre" }
+      { title: "Diplôme d'ingénieur en mécatronique", year: "2022-2027", institution: "ENSIBS Lorient", details: "", skills: ["Mécatronique","Projets tutorés","Systèmes embarqués"] },
+      { title: "Baccalauréat Général", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Spécialités : Mathématiques, Physique-Chimie et Sciences de la Vie et de la Terre", skills: ["Mathématiques","Physique-Chimie","SVT"] }
     ],
     experiences: [
-      { title: "Travail saisonnier en équipe et de nuit", period: "Juin 2022 à août 2024", company: "Cité Marine, Kervignac", details: "Travail saisonnier pendant trois étés consécutifs dans l'industrie agroalimentaire, impliquant la participation aux opérations de production et la découverte des exigences du secteur.", skills: ["Travail en équipe","Rigueur"] },
-      { title: "Mobilité internationale en Suède", period: "Juin 2025 à août 2025", company: "Manoir de Melderstein, Råneå", details: "Participation à des travaux variés de rénovation et d’entretien du manoir de Melderstein en Suède, incluant la peinture, l’entretien des extérieurs et d’autres missions polyvalentes." }
+      { title: "Travail saisonnier en équipe et de nuit", period: "Juin 2022 à août 2024", company: "Cité Marine, Kervignac", details: "Travail saisonnier pendant trois étés consécutifs dans l'industrie agroalimentaire, impliquant la participation aux opérations de production et la découverte des exigences du secteur.", skills: ["Travail en équipe","Rigueur","Ponctualité","Cadence élevée"] },
+      { title: "Mobilité internationale en Suède", period: "Juin 2025 à août 2025", company: "Manoir de Melderstein, Råneå", details: "Participation à des travaux variés de rénovation et d’entretien du manoir de Melderstein en Suède, incluant la peinture, l’entretien des extérieurs et d’autres missions polyvalentes.", skills: ["Polyvalence","Autonomie","Rénovation","Maintenance extérieure"] }
     ],
     skills: [
       { category: 'Mécanique', color: '#00b894', items: ['SolidWorks', 'Abaqus'] },
@@ -88,12 +88,12 @@ const siteData = {
       }
     ],
     diplomas: [
-      { title: "Mechatronics Engineering Degree", year: "2022-2027", institution: "ENSIBS Lorient", details: "" },
-      { title: "General Baccalaureate", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Specialties: Mathematics, Physics-Chemistry, and Life and Earth Sciences" }
+      { title: "Mechatronics Engineering Degree", year: "2022-2027", institution: "ENSIBS Lorient", details: "", skills: ["Mechatronics","Project-based learning","Embedded systems"] },
+      { title: "General Baccalaureate", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Specialties: Mathematics, Physics-Chemistry, and Life and Earth Sciences", skills: ["Mathematics","Physics-Chemistry","Life Sciences"] }
     ],
     experiences: [
-      { title: "Seasonal night and team work", period: "June 2022 to August 2024", company: "Cité Marine, Kervignac", details: "Seasonal work over three consecutive summers in the food industry, involving participation in production operations and discovering the sector's requirements.", skills: ["Teamwork"] },
-      { title: "International mobility in Sweden", period: "June 2025 to August 2025", company: "Melderstein Manor, Råneå", details: "Participation in various renovation and maintenance tasks at Melderstein Manor in Sweden, including painting, exterior maintenance, and other versatile missions." }
+      { title: "Seasonal night and team work", period: "June 2022 to August 2024", company: "Cité Marine, Kervignac", details: "Seasonal work over three consecutive summers in the food industry, involving participation in production operations and discovering the sector's requirements.", skills: ["Teamwork","Discipline","Punctuality","High pace"] },
+      { title: "International mobility in Sweden", period: "June 2025 to August 2025", company: "Melderstein Manor, Råneå", details: "Participation in various renovation and maintenance tasks at Melderstein Manor in Sweden, including painting, exterior maintenance, and other versatile missions.", skills: ["Adaptability","Autonomy","Renovation","Outdoor maintenance"] }
     ],
     skills: [
       { category: 'Mechanics', color: '#00b894', items: ['SolidWorks', 'Abaqus'] },
