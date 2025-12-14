@@ -450,15 +450,18 @@ function initDynamicNav() {
   ul.appendChild(liToggle);
 
   // Ensure a mobile-visible toggle exists outside nav (clone)
-  const header = document.querySelector('.site-header');
-  if (header && toggleBtn) {
+  const headerControls = document.querySelector('.header-controls');
+  if (headerControls && toggleBtn) {
     let mobileClone = document.getElementById('darkToggleMobile');
     if (!mobileClone) {
       mobileClone = toggleBtn.cloneNode(true);
       mobileClone.id = 'darkToggleMobile';
-      header.appendChild(mobileClone);
+      headerControls.prepend(mobileClone);
       // Re-attach same behavior
       mobileClone.addEventListener('click', () => toggleBtn.click());
+    } else {
+      // Ensure it sits above language switcher
+      headerControls.prepend(mobileClone);
     }
   }
 
