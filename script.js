@@ -42,7 +42,7 @@ const siteData = {
       { title: "Baccalauréat Général", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Spécialités : Mathématiques, Physique-Chimie et Sciences de la Vie et de la Terre" }
     ],
     experiences: [
-      { title: "Travail saisonnier en équipe et de nuit", period: "Juin 2022 à août 2024", company: "Cité Marine, Kervignac", details: "Travail saisonnier pendant trois étés consécutifs dans l'industrie agroalimentaire, impliquant la participation aux opérations de production et la découverte des exigences du secteur." },
+      { title: "Travail saisonnier en équipe et de nuit", period: "Juin 2022 à août 2024", company: "Cité Marine, Kervignac", details: "Travail saisonnier pendant trois étés consécutifs dans l'industrie agroalimentaire, impliquant la participation aux opérations de production et la découverte des exigences du secteur.", skills: ["Travail en équipe"] },
       { title: "Mobilité internationale en Suède", period: "Juin 2025 à août 2025", company: "Manoir de Melderstein, Råneå", details: "Participation à des travaux variés de rénovation et d’entretien du manoir de Melderstein en Suède, incluant la peinture, l’entretien des extérieurs et d’autres missions polyvalentes." }
     ],
     skills: [
@@ -92,7 +92,7 @@ const siteData = {
       { title: "General Baccalaureate", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Specialties: Mathematics, Physics-Chemistry, and Life and Earth Sciences" }
     ],
     experiences: [
-      { title: "Seasonal night and team work", period: "June 2022 to August 2024", company: "Cité Marine, Kervignac", details: "Seasonal work over three consecutive summers in the food industry, involving participation in production operations and discovering the sector's requirements." },
+      { title: "Seasonal night and team work", period: "June 2022 to August 2024", company: "Cité Marine, Kervignac", details: "Seasonal work over three consecutive summers in the food industry, involving participation in production operations and discovering the sector's requirements.", skills: ["Teamwork"] },
       { title: "International mobility in Sweden", period: "June 2025 to August 2025", company: "Melderstein Manor, Råneå", details: "Participation in various renovation and maintenance tasks at Melderstein Manor in Sweden, including painting, exterior maintenance, and other versatile missions." }
     ],
     skills: [
@@ -190,7 +190,10 @@ function renderDiplomas() {
   diplomasGrid.innerHTML = '';
   diplomas.forEach(d => {
     const el = document.createElement('div'); el.className = 'diploma';
-    el.innerHTML = `<h3>${d.title}</h3><span class="meta">${d.institution} • ${d.year}</span><div class="details"><p>${d.details}</p></div>`;
+    const skillsHtml = Array.isArray(d.skills) && d.skills.length
+      ? `<div class="item-skills">${d.skills.map(s => `<span class="skill-chip">${s}</span>`).join('')}</div>`
+      : '';
+    el.innerHTML = `<h3>${d.title}</h3><span class="meta">${d.institution} • ${d.year}</span><div class="details"><p>${d.details}</p>${skillsHtml}</div>`;
     diplomasGrid.appendChild(el);
   });
 }
@@ -200,7 +203,10 @@ function renderExperiences() {
   experiencesGrid.innerHTML = '';
   experiences.forEach(x => {
     const el = document.createElement('div'); el.className = 'experience';
-    el.innerHTML = `<h3>${x.title}</h3><span class="meta">${x.company} • ${x.period}</span><div class="details"><p>${x.details}</p></div>`;
+    const skillsHtml = Array.isArray(x.skills) && x.skills.length
+      ? `<div class="item-skills">${x.skills.map(s => `<span class="skill-chip">${s}</span>`).join('')}</div>`
+      : '';
+    el.innerHTML = `<h3>${x.title}</h3><span class="meta">${x.company} • ${x.period}</span><div class="details"><p>${x.details}</p>${skillsHtml}</div>`;
     experiencesGrid.appendChild(el);
   });
 }
