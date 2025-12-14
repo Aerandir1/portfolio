@@ -260,6 +260,8 @@ function closeSimModal() {
 // =========================
 //   INIT
 // =========================
+// Prevent initial flicker by disabling transitions during setup
+document.body.classList.add('no-anim');
 renderProjects();
 renderDiplomas();
 renderExperiences();
@@ -490,5 +492,8 @@ function observePageForNavChanges() {
   initDynamicNav();
 }
 observePageForNavChanges();
+
+// Re-enable transitions shortly after setup
+setTimeout(() => { document.body.classList.remove('no-anim'); }, 250);
 
 

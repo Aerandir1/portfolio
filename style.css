@@ -107,6 +107,14 @@ body.dark section h2{
 .skills.collapsed .skills-grid{max-height:0}
 .contact.collapsed .contact-grid{max-height:0}
 
+/* Disable initial animations to avoid flicker on load */
+body.no-anim .about .about-content,
+body.no-anim .projects .projects-grid,
+body.no-anim .diplomas .diplomas-grid,
+body.no-anim .experiences .experiences-grid,
+body.no-anim .skills .skills-grid,
+body.no-anim .contact .contact-grid{transition:none}
+
 /* Reduce gaps when sections are collapsed */
 .about.collapsed,
 .projects.collapsed,
