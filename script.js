@@ -48,8 +48,10 @@ const siteData = {
     skills: [
       { category: 'Mécanique', color: '#00b894', items: ['SolidWorks', 'Abaqus'] },
       { category: 'Informatique', color: '#6c5ce7', items: ['Python', 'C', 'Java','Ladder'] },
-      { category: 'Électronique', color: '#e17055', items: ['Électrotechnique', 'Conception de PCB'] },
+      { category: 'Électronique', color: '#e17055', items: ['Électrotechnique', 'Conception de PCB','EAGLE','KiCad'] },
+      { category: 'Bureautique', color: '#00ce45ff', items: ['LaTeX','Excel', 'Word', 'PowerPoint'] },
       { category: 'Soft skills', color: '#00cec9', items: ['Travail en équipe', 'Autonomie', 'Communication'] }
+      
     ]
   },
   en: {
@@ -98,7 +100,8 @@ const siteData = {
     skills: [
       { category: 'Mechanics', color: '#00b894', items: ['SolidWorks', 'Abaqus'] },
       { category: 'IT', color: '#6c5ce7', items: ['Python', 'C', 'Java','Ladder'] },
-      { category: 'Electronics', color: '#e17055', items: ['Electrotechnics', 'PCB Design'] },
+      { category: 'Electronics', color: '#e17055', items: ['Electrotechnics', 'PCB Design','EAGLE','KiCad'] },
+      { category: 'Office', color: '#00ce45ff', items: ['LaTeX','Excel','Word','PowerPoint'] },
       { category: 'Soft skills', color: '#00cec9', items: ['Teamwork', 'Autonomy', 'Communication'] }
     ]
   }
