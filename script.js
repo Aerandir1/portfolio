@@ -42,7 +42,7 @@ const siteData = {
       { title: "Baccalauréat Général", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Spécialités : Mathématiques, Physique-Chimie et Sciences de la Vie et de la Terre" }
     ],
     experiences: [
-      { title: "Travail saisonnier en équipe et de nuit", period: "Juin 2022 à août 2024", company: "Cité Marine, Kervignac", details: "Travail saisonnier pendant trois étés consécutifs dans l'industrie agroalimentaire, impliquant la participation aux opérations de production et la découverte des exigences du secteur.", skills: ["Travail en équipe"] },
+      { title: "Travail saisonnier en équipe et de nuit", period: "Juin 2022 à août 2024", company: "Cité Marine, Kervignac", details: "Travail saisonnier pendant trois étés consécutifs dans l'industrie agroalimentaire, impliquant la participation aux opérations de production et la découverte des exigences du secteur.", skills: ["Travail en équipe","Rigueur"] },
       { title: "Mobilité internationale en Suède", period: "Juin 2025 à août 2025", company: "Manoir de Melderstein, Råneå", details: "Participation à des travaux variés de rénovation et d’entretien du manoir de Melderstein en Suède, incluant la peinture, l’entretien des extérieurs et d’autres missions polyvalentes." }
     ],
     skills: [
