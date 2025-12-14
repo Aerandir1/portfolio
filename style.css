@@ -80,15 +80,11 @@ section h2::before{
    margin-right:4px;
    color:var(--muted);
    font-size:1.2rem;
-   transform:rotate(90deg); /* pointing down when expanded */
+   transform:rotate(0deg); /* pointing right by default */
    transition:transform .25s ease, color .2s ease;
 }
-.about.collapsed h2::before,
-.projects.collapsed h2::before,
-.experiences.collapsed h2::before,
-.diplomas.collapsed h2::before,
-.skills.collapsed h2::before{
-   transform:rotate(0deg); /* pointing right when collapsed */
+section:not(.collapsed) h2::before{
+   transform:rotate(90deg); /* pointing down when expanded */
 }
 body.dark section h2::before{ color:#9fb3c8; }
 body.dark section h2{
