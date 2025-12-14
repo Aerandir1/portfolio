@@ -190,7 +190,10 @@ function renderDiplomas() {
   diplomasGrid.innerHTML = '';
   diplomas.forEach(d => {
     const el = document.createElement('div'); el.className = 'diploma';
-    el.innerHTML = `<h3>${d.title}</h3><span class="meta">${d.institution} • ${d.year}</span><div class="details"><p>${d.details}</p></div>`;
+    const skills = Array.isArray(d.skills) && d.skills.length
+      ? `<div class="item-techs">${d.skills.map(s => `<span>${s}</span>`).join('')}</div>`
+      : '';
+    el.innerHTML = `<h3>${d.title}</h3><span class="meta">${d.institution} • ${d.year}</span><div class="details"><p>${d.details}</p>${skills}</div>`;
     diplomasGrid.appendChild(el);
   });
 }
@@ -200,7 +203,10 @@ function renderExperiences() {
   experiencesGrid.innerHTML = '';
   experiences.forEach(x => {
     const el = document.createElement('div'); el.className = 'experience';
-    el.innerHTML = `<h3>${x.title}</h3><span class="meta">${x.company} • ${x.period}</span><div class="details"><p>${x.details}</p></div>`;
+    const skills = Array.isArray(x.skills) && x.skills.length
+      ? `<div class="item-techs">${x.skills.map(s => `<span>${s}</span>`).join('')}</div>`
+      : '';
+    el.innerHTML = `<h3>${x.title}</h3><span class="meta">${x.company} • ${x.period}</span><div class="details"><p>${x.details}</p>${skills}</div>`;
     experiencesGrid.appendChild(el);
   });
 }
