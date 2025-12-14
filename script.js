@@ -48,26 +48,25 @@ const siteData = {
     skills: [
       { category: 'Mécanique', color: '#00b894', sub: [
         { label: 'CAO', items: ['SolidWorks'] },
-        { label: 'Simulation', items: ['Abaqus'] }
+        { label: 'Simulation', items: ['Abaqus', 'Méca3D'] }
       ]},
       { category: 'Électronique & Systèmes Embarqués', color: '#e17055', sub: [
-        { label: 'Cartes & I/O', items: ['Arduino'] },
-        { label: 'Conception PCB', items: ['EAGLE','KiCad'] }
+        { label: 'Cartes & I/O', items: ['Arduino', 'STM32', 'ESP32', 'Raspberry Pi','FPGA'] },
+        { label: 'Conception PCB', items: ['EAGLE','KiCad'] },
       ]},
       { category: 'Automatisme & Industriel', color: '#fd79a8', sub: [
-        { label: 'Automates', items: ['Automates programmables','Réseaux industriels'] },
+        { label: 'Automates', items: ['Automates programmables (Siemens)','Réseaux industriels'] },
         { label: 'Langage', items: ['Ladder'] }
       ]},
       { category: 'Informatique', color: '#6c5ce7', sub: [
-        { label: 'Langages', items: ['Python','C','Java'] }
+        { label: 'Langages', items: ['Python','C','Java'] },
       ]},
       { category: 'Bureautique', color: '#00ce45ff', sub: [
         { label: 'Suite Office', items: ['Excel','Word','PowerPoint'] },
-        { label: 'Publication', items: ['LaTeX'] }
+        { label: 'Autres', items: ['LaTeX'] }
       ]},
       { category: 'Soft skills', color: '#00cec9', sub: [
-        { label: 'Collaboration', items: ['Travail en équipe','Communication'] },
-        { label: 'Autonomie', items: ['Autonomie'] }
+        { label: 'Collaboration', items: ['Travail en équipe','Communication'] }
       ]}
     ]
   },
@@ -117,14 +116,14 @@ const siteData = {
     skills: [
       { category: 'Mechanics', color: '#00b894', sub: [
         { label: 'CAD', items: ['SolidWorks'] },
-        { label: 'Simulation', items: ['Abaqus'] }
+        { label: 'Simulation', items: ['Abaqus','Méca3D'] }
       ]},
       { category: 'Electronics & Embedded', color: '#e17055', sub: [
-        { label: 'Boards & I/O', items: ['Arduino'] },
+        { label: 'Boards & I/O', items: ['Arduino','STM32','ESP32','Raspberry Pi','FPGA'] },
         { label: 'PCB Design', items: ['EAGLE','KiCad'] }
       ]},
       { category: 'Automation & Industrial', color: '#fd79a8', sub: [
-        { label: 'PLCs', items: ['Programmable logic controllers','Industrial networks'] },
+        { label: 'PLCs', items: ['PLCs (Siemens)','Industrial networks'] },
         { label: 'Language', items: ['Ladder'] }
       ]},
       { category: 'IT', color: '#6c5ce7', sub: [
@@ -135,8 +134,7 @@ const siteData = {
         { label: 'Typesetting', items: ['LaTeX'] }
       ]},
       { category: 'Soft skills', color: '#00cec9', sub: [
-        { label: 'Collaboration', items: ['Teamwork','Communication'] },
-        { label: 'Autonomy', items: ['Autonomy'] }
+        { label: 'Collaboration', items: ['Teamwork','Communication'] }
       ]}
     ]
   }
