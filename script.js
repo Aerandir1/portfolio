@@ -38,7 +38,8 @@ const siteData = {
       }
     ],
     diplomas: [
-      { title: "Diplôme d'ingénieur en mécatronique", year: "2022-2027", institution: "ENSIBS Lorient", details: "", skills: ["Mécatronique","Projets tutorés","Systèmes embarqués"] },
+      { title: "Diplôme d'ingénieur en mécatronique", year: "2022-2027", institution: "ENSIBS Lorient", details: "", skills: ["Mécatronique","Gestion de projet","Systèmes embarqués","Programmation industrielle","Electrotechnique","Automatique","Travail en équipe","CAO","Prototypage"] },
+      { title: "CPGE PCSI", year: "2021-2022", institution: "Lycée Dupuy de Lôme Lorient", details: "Physique Chimie et Sciences de l'Ingénieur", skills: ["Mathématiques","Physique-Chimie","Sciences de l'Ingénieur","Thermodynamique","Rigueur scientifique","Solidarité"] },
       { title: "Baccalauréat Général", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Spécialités : Mathématiques, Physique-Chimie et Sciences de la Vie et de la Terre", skills: ["Mathématiques","Physique-Chimie","SVT"] }
     ],
     experiences: [
@@ -106,7 +107,8 @@ const siteData = {
       }
     ],
     diplomas: [
-      { title: "Mechatronics Engineering Degree", year: "2022-2027", institution: "ENSIBS Lorient", details: "", skills: ["Mechatronics","Project-based learning","Embedded systems"] },
+      { title: "Mechatronics Engineering Degree", year: "2022-2027", institution: "ENSIBS Lorient", details: "", skills: ["Mechatronics","Project management","Embedded systems","Industrial programming","Electrotechnics","Automation","Teamwork","CAD","Prototyping"] },
+      { title: "CPGE PCSI", year: "2021-2022", institution: "Lycée Dupuy de Lôme Lorient", details: "Physics, Chemistry and Engineering Sciences", skills: ["Mathematics","Physics-Chemistry","Engineering Sciences","Thermodynamics","Scientific rigor","Solidarity"] },
       { title: "General Baccalaureate", year: "2018-2021", institution: "Lycée Victor Hugo Hennebont", details: "Specialties: Mathematics, Physics-Chemistry, and Life and Earth Sciences", skills: ["Mathematics","Physics-Chemistry","Life Sciences"] }
     ],
     experiences: [
