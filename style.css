@@ -376,6 +376,8 @@ body.dark .diploma::before,body.dark .experience::before{background:#7fd8ff;bord
    .project-card{padding:18px}
    .project-card h3{font-size:1.3rem}
    .project-card p{font-size:1rem}
+   /* Prevent project images from exceeding card height on mobile */
+   .project-card img{max-height:55vw}
 
    .skills-grid{grid-template-columns:1fr}
 
