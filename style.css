@@ -162,7 +162,7 @@ body.dark .project-card::after{ background:rgba(255,255,255,.08); color:#e6eef9;
 .project-card .details{margin-top:16px;display:none}
 .project-card.fullscreen .details{display:block}
 /* Default image style (can be hidden when not opened) */
-.project-card img{border-radius:12px;margin-top:16px;box-shadow:0 4px 16px rgba(16,24,40,.08);width:100%;height:auto;max-width:100%;object-fit:contain}
+.project-card img{border-radius:12px;margin-top:16px;box-shadow:0 4px 16px rgba(16,24,40,.08);width:100%;height:auto;max-width:100%;max-height:min(45vw,240px);object-fit:contain}
 /* Hide illustration by default; show when opened (fullscreen) */
 .project-card .project-image-block{display:none}
 .project-card.fullscreen .project-image-block{display:block}
