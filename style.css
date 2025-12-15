@@ -162,14 +162,14 @@ body.dark .project-card::after{ background:rgba(255,255,255,.08); color:#e6eef9;
 .project-card .details{margin-top:16px;display:none}
 .project-card.fullscreen .details{display:block}
 /* Default image style (can be hidden when not opened) */
-.project-card img{border-radius:12px;margin-top:16px;box-shadow:0 4px 16px rgba(16,24,40,.08)}
+.project-card img{border-radius:12px;margin-top:16px;box-shadow:0 4px 16px rgba(16,24,40,.08);width:100%;height:auto;max-width:100%;object-fit:contain}
 /* Hide illustration by default; show when opened (fullscreen) */
 .project-card .project-image-block{display:none}
 .project-card.fullscreen .project-image-block{display:block}
 /* Move image to the top and remove any frame when opened */
 .project-card.fullscreen .project-structure{display:flex;flex-direction:column}
 .project-card.fullscreen .project-image-block{order:-1;margin-bottom:16px}
-.project-card.fullscreen .project-image-block img{border-radius:0;box-shadow:none;width:auto;max-width:400px;height:auto;margin:0 auto;display:block}
+.project-card.fullscreen .project-image-block img{border-radius:0;box-shadow:none;width:100%;max-width:100%;height:auto;max-height:70vh;object-fit:contain;margin:0 auto;display:block}
 /* Fullscreen layout reverted: image on top, content below */
 .project-card.fullscreen .project-structure{display:flex;flex-direction:column}
 .project-card.fullscreen .project-image-block{order:-1;margin-bottom:16px}
