@@ -374,6 +374,8 @@ body.dark .diploma::before,body.dark .experience::before{background:#7fd8ff;bord
 
    .projects-grid{grid-template-columns:1fr}
    .project-card{padding:18px}
+   /* Keep project images contained on small screens */
+   .project-card img{max-height:220px;object-fit:contain}
    .project-card h3{font-size:1.3rem}
    .project-card p{font-size:1rem}
 
