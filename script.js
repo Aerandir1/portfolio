@@ -391,35 +391,30 @@ renderSkills();
 
 /* theme toggle */
 function initThemeToggle() {
-  const desktop = document.getElementById('darkToggle');
-  const mobile = document.getElementById('darkToggleMobile');
-  if (!desktop && !mobile) return;
-  const saved = localStorage.getItem('theme'); if (saved === 'dark') document.body.classList.add('dark');
-  function refreshButton(btn) {
-    if (!btn) return;
+  const isEn = (document.documentElement.lang || '').toLowerCase().startsWith('en');
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') document.body.classList.add('dark');
+
+  function refreshButtons() {
     const isDark = document.body.classList.contains('dark');
-    // Use SVG icons for consistent rendering
-    const sunSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
-    const moonSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-    btn.innerHTML = isDark ? moonSvg : sunSvg;
-    btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-    btn.setAttribute('aria-label', isDark ? 'Activer le thème clair' : 'Activer le thème sombre');
-    btn.tabIndex = 0;
+    const labelDark = isEn ? 'Enable dark theme' : 'Activer le thème sombre';
+    const labelLight = isEn ? 'Enable light theme' : 'Activer le thème clair';
+    const buttons = [document.getElementById('darkToggle'), document.getElementById('darkToggleMobile')].filter(Boolean);
+
+    buttons.forEach((btn) => {
+      btn.textContent = isDark ? '☀️' : '🌙';
+      btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      btn.setAttribute('aria-label', isDark ? labelLight : labelDark);
+      btn.onclick = function (e) {
+        e.stopPropagation();
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        refreshButtons();
+      };
+    });
   }
-  function refreshBoth(){ refreshButton(desktop); refreshButton(mobile); }
-  function onClick(e){ e.stopPropagation(); document.body.classList.toggle('dark'); localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light'); refreshBoth(); }
-  // Remove existing listeners by cloning (to avoid duplicate handlers)
-  if (desktop) {
-    const dClone = desktop.cloneNode(true);
-    desktop.parentNode.replaceChild(dClone, desktop);
-    dClone.addEventListener('click', onClick);
-  }
-  if (mobile) {
-    const mClone = mobile.cloneNode(true);
-    mobile.parentNode.replaceChild(mClone, mobile);
-    mClone.addEventListener('click', onClick);
-  }
-  refreshBoth();
+
+  refreshButtons();
 }
 initThemeToggle();
 
@@ -587,8 +582,6 @@ function initDynamicNav() {
       mobileClone = toggleBtn.cloneNode(true);
       mobileClone.id = 'darkToggleMobile';
       headerControls.prepend(mobileClone);
-      // Re-attach same behavior
-      mobileClone.addEventListener('click', () => toggleBtn.click());
     } else {
       // Ensure it sits above language switcher
       headerControls.prepend(mobileClone);
