@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prix carburants</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Prix carburants</h1>
+      <p>Recherche par ville ou code postal + carburant.</p>
+    </header>
+
+    <form class="card" method="post" action="/">
+      <div class="grid">
+        <label>
+          Ville ou code postal
+          <input name="query" value="{{ query }}" placeholder="ex: Lorient ou 56100" required />
+        </label>
+        <label>
+          ID carburant
+          <input name="id_carb" value="{{ id_carb }}" placeholder="ex: 1, 5, 6" required />
+        </label>
+      </div>
+      <div class="actions">
+        <button type="submit">Rechercher</button>
+        <button type="submit" name="refresh" value="1" class="secondary">Rafraîchir les données</button>
+      </div>
+    </form>
+
+    {% if loaded_at %}
+      <p class="muted">Données chargées: {{ loaded_at | int }}</p>
+    {% endif %}
+
+    {% if results is not none %}
+      <section class="results">
+        <h2>Résultats ({{ results | length }})</h2>
+        {% if results | length == 0 %}
+          <p>Aucun résultat.</p>
+        {% else %}
+          <ul>
+            {% for item in results %}
+              <li class="result">
+                <div>
+                  <strong>{{ item.ville }}</strong> ({{ item.cp }}) — {{ item.adresse }}
+                </div>
+                <div class="price">{{ item.carburant }} : {{ item.prix }}</div>
+                {% if item.maps_url %}
+                  <a class="link" href="{{ item.maps_url }}" target="_blank" rel="noopener">Ouvrir dans Maps</a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </section>
+    {% endif %}
+  </main>
+</body>
+</html>
