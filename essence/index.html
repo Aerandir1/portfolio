@@ -125,7 +125,7 @@
 
     <section id="app" class="app-frame-wrap" aria-label="Application prix carburants">
       <div class="app-frame-head">
-        <h2>Application intégrée (sans serveur)</h2>
+        <h2>Application intégrée</h2>
         <p class="app-note">Recherche par ville ou code postal, triée par prix croissant.</p>
       </div>
       <form id="fuelForm" class="search-form" autocomplete="off">
@@ -148,12 +148,11 @@
         <button type="submit">Rechercher</button>
         <button type="button" id="refreshBtn" class="secondary">Rafraîchir données</button>
       </form>
-      <div id="status" class="status">Chargement initial des données…</div>
+      <div id="status" class="status">Prêt. Lance une recherche.</div>
       <div id="results" class="results"></div>
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
   <script>
     (function () {
       const button = document.getElementById('darkToggle');
@@ -181,15 +180,13 @@
     })();
 
     (function () {
-      const DATA_URL = 'https://donnees.roulez-eco.fr/opendata/instantane';
+      const API_BASE = 'https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records';
       const form = document.getElementById('fuelForm');
       const queryInput = document.getElementById('query');
       const fuelSelect = document.getElementById('fuel');
       const statusEl = document.getElementById('status');
       const resultsEl = document.getElementById('results');
       const refreshBtn = document.getElementById('refreshBtn');
-      let stations = [];
-      let loadedAt = null;
 
       function normalize(text) {
         return (text || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -211,46 +208,63 @@
         return `https://www.google.com/maps/search/?api=1&query=${q}`;
       }
 
-      async function loadStations(force = false) {
-        if (!force && stations.length) return;
-        statusEl.textContent = 'Téléchargement des données nationales…';
-        resultsEl.innerHTML = '';
-        const response = await fetch(DATA_URL, { cache: 'no-store' });
-        if (!response.ok) throw new Error('Téléchargement impossible');
-
-        statusEl.textContent = 'Extraction et analyse du fichier…';
-        const blob = await response.blob();
-        const zip = await JSZip.loadAsync(blob);
-        const xmlEntryName = Object.keys(zip.files).find((name) => name.toLowerCase().endsWith('.xml'));
-        if (!xmlEntryName) throw new Error('Fichier XML introuvable dans le ZIP');
-
-        const xmlText = await zip.files[xmlEntryName].async('string');
-        const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
-        const pdvs = Array.from(xml.getElementsByTagName('pdv'));
-
-        stations = pdvs.map((pdv) => {
+      function parsePrices(rawPrices) {
+        if (!rawPrices) return {};
+        try {
+          const arr = typeof rawPrices === 'string' ? JSON.parse(rawPrices) : rawPrices;
+          if (!Array.isArray(arr)) return {};
           const prices = {};
-          Array.from(pdv.getElementsByTagName('prix')).forEach((p) => {
-            const id = p.getAttribute('id') || '';
+          arr.forEach((p) => {
+            const id = p['@id'] || '';
             prices[id] = {
-              name: p.getAttribute('nom') || id,
-              value: Number(p.getAttribute('valeur'))
+              name: p['@nom'] || id,
+              value: Number(p['@valeur'])
             };
           });
-          return {
-            id: pdv.getAttribute('id') || '',
-            cp: pdv.getAttribute('cp') || '',
-            city: (pdv.getElementsByTagName('ville')[0]?.textContent || '').trim(),
-            cityNorm: normalize(pdv.getElementsByTagName('ville')[0]?.textContent || ''),
-            address: (pdv.getElementsByTagName('adresse')[0]?.textContent || '').trim(),
-            lat: pdv.getAttribute('latitude') || '',
-            lon: pdv.getAttribute('longitude') || '',
-            prices
-          };
-        });
+          return prices;
+        } catch {
+          return {};
+        }
+      }
 
-        loadedAt = new Date();
-        statusEl.textContent = `Données chargées: ${stations.length} stations (${loadedAt.toLocaleString('fr-FR')})`;
+      function sqlEscape(value) {
+        return String(value || '').replace(/'/g, "''");
+      }
+
+      async function fetchStationsByQuery(query) {
+        const trimmed = (query || '').trim();
+        const isCp = /^\d+$/.test(trimmed);
+        const where = isCp
+          ? `cp='${sqlEscape(trimmed)}'`
+          : `ville like '${sqlEscape(trimmed)}'`;
+
+        const all = [];
+        let offset = 0;
+        const limit = 100;
+        let totalCount = null;
+
+        while (totalCount === null || offset < totalCount) {
+          const url = `${API_BASE}?where=${encodeURIComponent(where)}&limit=${limit}&offset=${offset}`;
+          const response = await fetch(url, { cache: 'no-store' });
+          if (!response.ok) throw new Error('Téléchargement impossible');
+          const data = await response.json();
+          const chunk = Array.isArray(data.results) ? data.results : [];
+          totalCount = Number.isFinite(data.total_count) ? data.total_count : chunk.length;
+          all.push(...chunk);
+          if (!chunk.length) break;
+          offset += chunk.length;
+        }
+
+        return all.map((s) => ({
+          id: s.id || '',
+          cp: s.cp || '',
+          city: (s.ville || '').trim(),
+          cityNorm: normalize(s.ville || ''),
+          address: (s.adresse || '').trim(),
+          lat: s.latitude || '',
+          lon: s.longitude || '',
+          prices: parsePrices(s.prix)
+        }));
       }
 
       function renderResults(items, fuelId) {
@@ -282,7 +296,6 @@
       async function handleSearch(event) {
         event.preventDefault();
         try {
-          await loadStations(false);
           const query = (queryInput.value || '').trim();
           const fuelId = fuelSelect.value;
           if (!query || !fuelId) {
@@ -290,8 +303,11 @@
             return;
           }
 
+          statusEl.textContent = 'Recherche en cours…';
+          const stations = await fetchStationsByQuery(query);
           const qNorm = normalize(query);
           const qCp = /^\d+$/.test(query) ? query : '';
+
           const matched = stations.filter((s) => {
             const fuel = s.prices[fuelId];
             if (!fuel || !Number.isFinite(fuel.value)) return false;
@@ -301,22 +317,19 @@
           statusEl.textContent = `${matched.length} résultat(s) pour « ${query} ».`;
           renderResults(matched, fuelId);
         } catch (error) {
-          statusEl.textContent = `Erreur: ${error.message || 'impossible de charger les données.'}`;
+          statusEl.textContent = `Erreur: ${error.message || 'impossible de charger les données.'} Vérifie la connexion Internet et les bloqueurs de requêtes.`;
           resultsEl.innerHTML = '';
         }
       }
 
       form.addEventListener('submit', handleSearch);
-      refreshBtn.addEventListener('click', async function () {
-        try {
-          await loadStations(true);
-        } catch (error) {
-          statusEl.textContent = `Erreur: ${error.message || 'rafraîchissement impossible.'}`;
+      refreshBtn.addEventListener('click', function () {
+        if (queryInput.value && fuelSelect.value) {
+          form.requestSubmit();
+          return;
         }
-      });
-
-      loadStations(false).catch((error) => {
-        statusEl.textContent = `Erreur: ${error.message || 'chargement initial impossible.'}`;
+        statusEl.textContent = 'Prêt. Lance une recherche.';
+        resultsEl.innerHTML = '';
       });
     })();
   </script>
