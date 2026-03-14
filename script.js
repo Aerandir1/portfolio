@@ -45,15 +45,15 @@ const siteData = {
       {
         title: "Comparateur de prix carburants",
         id: "fuel-prices",
-        description: "Application Flask qui compare les prix des carburants par ville ou code postal à partir de l'open data officiel.",
-        details: `Cette application web récupère les données ouvertes de Roulez Éco, télécharge l'archive ZIP, parse le XML puis trie les stations-service selon le carburant et le prix. J'ai développé le backend en Python avec Flask, mis en place un cache mémoire pour éviter les téléchargements inutiles, et ajouté des liens Google Maps pour ouvrir rapidement chaque station. Le formulaire permet une recherche simple par ville ou code postal avec rafraîchissement manuel des données.`,
-        techs: ["Python", "Flask", "Requests", "XML", "Open Data", "Google Maps"],
+        description: "Application web qui compare les prix des carburants par ville ou code postal à partir de l'open data officiel.",
+        details: `Cette application web récupère les données ouvertes de Roulez Éco directement dans le navigateur, télécharge l'archive ZIP, parse le XML puis trie les stations-service selon le carburant et le prix. Elle inclut une recherche ville/code postal, un rafraîchissement manuel des données et des liens Google Maps pour ouvrir rapidement chaque station.`,
+        techs: ["JavaScript", "XML", "Open Data", "Google Maps", "UI/UX"],
         action: {
-          type: "iframe-modal",
+          type: "link",
           label: "Ouvrir l'application",
           title: "Prix carburants",
-          url: "http://127.0.0.1:5000/",
-          note: "Lance d'abord l'application Flask du dossier app si elle n'est pas déjà démarrée."
+          url: "/essence/",
+          target: "_self"
         }
       }
     ],
@@ -134,15 +134,15 @@ const siteData = {
       {
         title: "Fuel Price Finder",
         id: "fuel-prices",
-        description: "Flask web app that compares fuel prices by city or postal code using official French open data.",
-        details: `This web application downloads the official Roulez Éco dataset, extracts the XML feed from the ZIP archive, and sorts fuel stations by fuel type and price. I built the backend in Python with Flask, added in-memory caching to avoid unnecessary downloads, and generated Google Maps links for each station. The interface provides a simple search flow by city or postal code with optional data refresh.`,
-        techs: ["Python", "Flask", "Requests", "XML", "Open Data", "Google Maps"],
+        description: "Web app that compares fuel prices by city or postal code using official French open data.",
+        details: `This web application fetches the official Roulez Éco dataset directly in the browser, extracts the XML feed from the ZIP archive, and sorts fuel stations by fuel type and price. It includes city/postal-code search, manual data refresh, and Google Maps links for each station.`,
+        techs: ["JavaScript", "XML", "Open Data", "Google Maps", "UI/UX"],
         action: {
-          type: "iframe-modal",
+          type: "link",
           label: "Open the app",
           title: "Fuel Prices",
-          url: "http://127.0.0.1:5000/",
-          note: "Start the Flask app from the app folder first if it is not already running."
+          url: "/essence/",
+          target: "_self"
         }
       }
     ],

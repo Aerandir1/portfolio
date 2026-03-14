@@ -24,17 +24,39 @@
     .app-frame-wrap { margin-top: 28px; background: var(--surface); border: 1px solid rgba(16,24,40,.08); border-radius: 20px; box-shadow: var(--shadow); padding: 18px; }
     .app-frame-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
     .app-frame-head h2 { font-size: 1.35rem; }
-    .app-frame { width: 100%; min-height: 74vh; border: none; border-radius: 14px; background: #fff; }
+    .search-form { display: grid; gap: 12px; grid-template-columns: 1fr 220px auto auto; align-items: end; }
+    .search-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 700; color: var(--text); }
+    .search-form input,
+    .search-form select { padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(16,24,40,.18); background: #fff; color: #0f1820; font-size: 1rem; }
+    .search-form button { padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(0,151,167,.28); background: rgba(0,151,167,.12); color: var(--accent); font-weight: 800; cursor: pointer; }
+    .search-form button.secondary { border-color: rgba(16,24,40,.12); background: transparent; color: var(--text); }
+    .status { margin-top: 12px; color: var(--muted); font-size: .95rem; }
+    .results { margin-top: 16px; display: grid; gap: 10px; }
+    .result-item { border: 1px solid rgba(16,24,40,.1); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.8); }
+    .result-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .result-title { font-weight: 800; color: var(--text); }
+    .result-price { font-weight: 800; color: var(--accent); }
+    .result-meta { color: var(--muted); margin-top: 6px; }
+    .result-link { display: inline-flex; margin-top: 8px; color: var(--accent); text-decoration: none; font-weight: 700; }
+    .result-link:hover { text-decoration: underline; }
     body.dark .app-hero,
     body.dark .app-card,
     body.dark .app-frame-wrap { background: #121a22; border-color: rgba(255,255,255,.06); box-shadow: none; }
     body.dark .app-hero p,
     body.dark .app-note,
-    body.dark .app-card ul { color: #d7e1ec; }
+    body.dark .app-card ul,
+    body.dark .status,
+    body.dark .result-meta { color: #d7e1ec; }
+    body.dark .search-form label,
+    body.dark .result-title { color: #e6eef9; }
+    body.dark .search-form input,
+    body.dark .search-form select,
+    body.dark .result-item { background: #0f161d; color: #e6eef9; border-color: rgba(255,255,255,.1); }
+    body.dark .search-form button.secondary { color: #e6eef9; border-color: rgba(255,255,255,.12); }
     body.dark .app-btn.secondary { color: #e6eef9; border-color: rgba(255,255,255,.12); }
     @media (max-width: 900px) {
       .app-grid { grid-template-columns: 1fr; }
-      .app-frame { min-height: 65vh; }
+      .search-form { grid-template-columns: 1fr; }
       .app-frame-head { flex-direction: column; align-items: flex-start; }
     }
   </style>
@@ -72,11 +94,11 @@
       <div class="app-kicker">⛽ Projet dédié</div>
       <h1>Comparateur de prix carburants</h1>
       <p>
-        Ce projet consiste en une application web développée avec Flask, permettant aux utilisateurs de rechercher et comparer les prix des carburants dans les stations-service à proximité. L'application consomme des données ouvertes fournies par le gouvernement français, offrant ainsi une interface conviviale pour trouver les meilleures offres de carburant.
+        Ce projet consiste en une application web front-end permettant de rechercher et comparer les prix des carburants dans les stations-service à proximité. L'application consomme les données ouvertes officielles en direct dans le navigateur et propose une interface conviviale pour trouver les meilleures offres.
         
       </p>
       <div class="app-actions">
-        <a class="app-btn" href="http://127.0.0.1:5000/" target="_blank" rel="noopener">Ouvrir dans un onglet</a>
+        <a class="app-btn" href="#app">Accéder à l'application</a>
         <a class="app-btn secondary" href="/fr/#projects">Voir aussi dans les projets</a>
       </div>
     </section>
@@ -95,22 +117,43 @@
       <article class="app-card">
         <h2>À savoir</h2>
         <p class="app-note">
-          Cette page embarque l'application disponible localement sur <strong>127.0.0.1:5000</strong>.
-          Si rien ne s'affiche dans l'encadré ci-dessous, lance d'abord l'application avec
-          <strong>python3 app/app.py</strong> depuis le dossier du portfolio.
+          Cette version est 100% web: elle fonctionne directement sur Internet sans Flask,
+          en chargeant les données open data en direct depuis la source officielle.
         </p>
       </article>
     </section>
 
-    <section class="app-frame-wrap" aria-label="Application prix carburants">
+    <section id="app" class="app-frame-wrap" aria-label="Application prix carburants">
       <div class="app-frame-head">
-        <h2>Application intégrée</h2>
-        <p class="app-note">Accès direct via <strong>/essence/</strong> tout en gardant le projet dans le portfolio.</p>
+        <h2>Application intégrée (sans serveur)</h2>
+        <p class="app-note">Recherche par ville ou code postal, triée par prix croissant.</p>
       </div>
-      <iframe class="app-frame" src="http://127.0.0.1:5000/" title="Application prix carburants"></iframe>
+      <form id="fuelForm" class="search-form" autocomplete="off">
+        <label>
+          Ville ou code postal
+          <input id="query" name="query" placeholder="ex: Lorient ou 56100" required>
+        </label>
+        <label>
+          Carburant
+          <select id="fuel" name="fuel" required>
+            <option value="">Choisir</option>
+            <option value="1">Gazole</option>
+            <option value="2">SP95</option>
+            <option value="5">SP95-E10</option>
+            <option value="6">SP98</option>
+            <option value="3">E85</option>
+            <option value="4">GPLc</option>
+          </select>
+        </label>
+        <button type="submit">Rechercher</button>
+        <button type="button" id="refreshBtn" class="secondary">Rafraîchir données</button>
+      </form>
+      <div id="status" class="status">Chargement initial des données…</div>
+      <div id="results" class="results"></div>
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
   <script>
     (function () {
       const button = document.getElementById('darkToggle');
@@ -135,6 +178,146 @@
       });
 
       refreshButton();
+    })();
+
+    (function () {
+      const DATA_URL = 'https://donnees.roulez-eco.fr/opendata/instantane';
+      const form = document.getElementById('fuelForm');
+      const queryInput = document.getElementById('query');
+      const fuelSelect = document.getElementById('fuel');
+      const statusEl = document.getElementById('status');
+      const resultsEl = document.getElementById('results');
+      const refreshBtn = document.getElementById('refreshBtn');
+      let stations = [];
+      let loadedAt = null;
+
+      function normalize(text) {
+        return (text || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      }
+
+      function toDegrees(value) {
+        const num = Number(value || 0);
+        if (!Number.isFinite(num)) return 0;
+        return Math.abs(num) > 1000 ? num / 100000 : num;
+      }
+
+      function mapsUrl(station) {
+        const lat = toDegrees(station.lat);
+        const lon = toDegrees(station.lon);
+        if (lat && lon) {
+          return `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+        }
+        const q = encodeURIComponent(`${station.address}, ${station.cp} ${station.city}`.trim());
+        return `https://www.google.com/maps/search/?api=1&query=${q}`;
+      }
+
+      async function loadStations(force = false) {
+        if (!force && stations.length) return;
+        statusEl.textContent = 'Téléchargement des données nationales…';
+        resultsEl.innerHTML = '';
+        const response = await fetch(DATA_URL, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Téléchargement impossible');
+
+        statusEl.textContent = 'Extraction et analyse du fichier…';
+        const blob = await response.blob();
+        const zip = await JSZip.loadAsync(blob);
+        const xmlEntryName = Object.keys(zip.files).find((name) => name.toLowerCase().endsWith('.xml'));
+        if (!xmlEntryName) throw new Error('Fichier XML introuvable dans le ZIP');
+
+        const xmlText = await zip.files[xmlEntryName].async('string');
+        const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+        const pdvs = Array.from(xml.getElementsByTagName('pdv'));
+
+        stations = pdvs.map((pdv) => {
+          const prices = {};
+          Array.from(pdv.getElementsByTagName('prix')).forEach((p) => {
+            const id = p.getAttribute('id') || '';
+            prices[id] = {
+              name: p.getAttribute('nom') || id,
+              value: Number(p.getAttribute('valeur'))
+            };
+          });
+          return {
+            id: pdv.getAttribute('id') || '',
+            cp: pdv.getAttribute('cp') || '',
+            city: (pdv.getElementsByTagName('ville')[0]?.textContent || '').trim(),
+            cityNorm: normalize(pdv.getElementsByTagName('ville')[0]?.textContent || ''),
+            address: (pdv.getElementsByTagName('adresse')[0]?.textContent || '').trim(),
+            lat: pdv.getAttribute('latitude') || '',
+            lon: pdv.getAttribute('longitude') || '',
+            prices
+          };
+        });
+
+        loadedAt = new Date();
+        statusEl.textContent = `Données chargées: ${stations.length} stations (${loadedAt.toLocaleString('fr-FR')})`;
+      }
+
+      function renderResults(items, fuelId) {
+        if (!items.length) {
+          resultsEl.innerHTML = '<div class="result-item">Aucun résultat.</div>';
+          return;
+        }
+
+        const limited = items.slice(0, 200);
+        resultsEl.innerHTML = limited.map((s) => {
+          const fuel = s.prices[fuelId];
+          return `
+            <article class="result-item">
+              <div class="result-top">
+                <div class="result-title">${s.city} (${s.cp}) — ${s.address}</div>
+                <div class="result-price">${fuel.name} : ${Number(fuel.value).toFixed(3)} €</div>
+              </div>
+              <div class="result-meta">Station #${s.id}</div>
+              <a class="result-link" href="${mapsUrl(s)}" target="_blank" rel="noopener">Ouvrir dans Maps</a>
+            </article>
+          `;
+        }).join('');
+
+        if (items.length > limited.length) {
+          resultsEl.insertAdjacentHTML('beforeend', `<div class="result-item">Affichage limité à ${limited.length} résultats sur ${items.length}.</div>`);
+        }
+      }
+
+      async function handleSearch(event) {
+        event.preventDefault();
+        try {
+          await loadStations(false);
+          const query = (queryInput.value || '').trim();
+          const fuelId = fuelSelect.value;
+          if (!query || !fuelId) {
+            statusEl.textContent = 'Renseigne une ville/CP et un carburant.';
+            return;
+          }
+
+          const qNorm = normalize(query);
+          const qCp = /^\d+$/.test(query) ? query : '';
+          const matched = stations.filter((s) => {
+            const fuel = s.prices[fuelId];
+            if (!fuel || !Number.isFinite(fuel.value)) return false;
+            return qCp ? s.cp === qCp : s.cityNorm === qNorm;
+          }).sort((a, b) => a.prices[fuelId].value - b.prices[fuelId].value);
+
+          statusEl.textContent = `${matched.length} résultat(s) pour « ${query} ».`;
+          renderResults(matched, fuelId);
+        } catch (error) {
+          statusEl.textContent = `Erreur: ${error.message || 'impossible de charger les données.'}`;
+          resultsEl.innerHTML = '';
+        }
+      }
+
+      form.addEventListener('submit', handleSearch);
+      refreshBtn.addEventListener('click', async function () {
+        try {
+          await loadStations(true);
+        } catch (error) {
+          statusEl.textContent = `Erreur: ${error.message || 'rafraîchissement impossible.'}`;
+        }
+      });
+
+      loadStations(false).catch((error) => {
+        statusEl.textContent = `Erreur: ${error.message || 'chargement initial impossible.'}`;
+      });
     })();
   </script>
 </body>
