@@ -5,7 +5,16 @@
       "label": "Git Push",
       "type": "shell",
       "command": "./bin/push.sh",
-      "problemMatcher": []
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
     }
   ]
 }
