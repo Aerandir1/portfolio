@@ -565,4 +565,19 @@ observePageForNavChanges();
 // Re-enable transitions shortly after setup
 setTimeout(() => { document.body.classList.remove('no-anim'); }, 250);
 
-
+/* ========================= Scroll reveal ========================= */
+function initScrollReveal() {
+  const els = document.querySelectorAll('section, .project-card, .diploma, .experience, .skill-group, .contact-card');
+  els.forEach(el => el.classList.add('reveal'));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+}
+// Delay slightly so initial layout settles
+setTimeout(initScrollReveal, 300);
