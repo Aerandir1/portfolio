@@ -389,51 +389,16 @@ renderDiplomas();
 renderExperiences();
 renderSkills();
 
-/* theme toggle */
-function initThemeToggle() {
-  const isEn = (document.documentElement.lang || '').toLowerCase().startsWith('en');
-  // Migrate: clear old key to allow system detection
+/* theme: follow system preference */
+function initTheme() {
   localStorage.removeItem('theme');
-  const saved = localStorage.getItem('theme-pref');
-  if (saved === 'dark') {
-    document.body.classList.add('dark');
-  } else if (saved === 'light') {
-    document.body.classList.remove('dark');
-  } else {
-    // No user preference: follow system theme
-    document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
-  }
-
-  function refreshButtons() {
-    const isDark = document.body.classList.contains('dark');
-    const labelDark = isEn ? 'Enable dark theme' : 'Activer le thème sombre';
-    const labelLight = isEn ? 'Enable light theme' : 'Activer le thème clair';
-    const buttons = [document.getElementById('darkToggle'), document.getElementById('darkToggleMobile')].filter(Boolean);
-
-    buttons.forEach((btn) => {
-      btn.textContent = isDark ? '☀️' : '🌙';
-      btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-      btn.setAttribute('aria-label', isDark ? labelLight : labelDark);
-      btn.onclick = function (e) {
-        e.stopPropagation();
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme-pref', document.body.classList.contains('dark') ? 'dark' : 'light');
-        refreshButtons();
-      };
-    });
-  }
-
-  // Listen for system theme changes (applied only when no manual override)
+  localStorage.removeItem('theme-pref');
+  document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme-pref')) {
-      document.body.classList.toggle('dark', e.matches);
-      refreshButtons();
-    }
+    document.body.classList.toggle('dark', e.matches);
   });
-
-  refreshButtons();
 }
-initThemeToggle();
+initTheme();
 
 /* simple section toggles (sections only) */
 function initSectionToggles() {
@@ -568,8 +533,6 @@ function initDynamicNav() {
     map.push({ id: sec.id, label });
   });
 
-  // Capture dark toggle before clearing UL (to avoid losing it)
-  let toggleBtn = document.getElementById('darkToggle');
   // Rebuild UL links in the same order
   ul.innerHTML = '';
   map.forEach(({ id, label }) => {
@@ -578,39 +541,11 @@ function initDynamicNav() {
     a.href = `#${id}`; a.dataset.target = id; a.textContent = label;
     li.appendChild(a); ul.appendChild(li);
   });
-  // Append dark mode toggle at the end (recreate if missing)
-  const liToggle = document.createElement('li');
-  if (!toggleBtn) {
-    toggleBtn = document.createElement('button');
-    toggleBtn.id = 'darkToggle';
-    toggleBtn.className = 'dark-toggle';
-    toggleBtn.setAttribute('aria-pressed','false');
-    toggleBtn.setAttribute('aria-label','Activer le thème sombre');
-    // Icon will be set by initThemeToggle()
-  }
-  liToggle.appendChild(toggleBtn);
-  ul.appendChild(liToggle);
-
-  // Ensure a mobile-visible toggle exists outside nav (clone)
-  const headerControls = document.querySelector('.header-controls');
-  if (headerControls && toggleBtn) {
-    let mobileClone = document.getElementById('darkToggleMobile');
-    if (!mobileClone) {
-      mobileClone = toggleBtn.cloneNode(true);
-      mobileClone.id = 'darkToggleMobile';
-      headerControls.prepend(mobileClone);
-    } else {
-      // Ensure it sits above language switcher
-      headerControls.prepend(mobileClone);
-    }
-  }
 
   // Re-wire header nav behaviors on the new links
   initHeaderNav();
   // Re-wire exclusive section control on the new links
   initExclusiveSectionControl();
-  // Ensure theme toggle behavior is bound on (re)created button
-  initThemeToggle();
 }
 
 // Observe changes to headings/order and update nav automatically

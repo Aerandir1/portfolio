@@ -18,9 +18,7 @@ img{max-width:100%;display:block}
 .main-nav ul{list-style:none;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .main-nav a{text-decoration:none;color:var(--text);font-weight:600;padding:8px 12px;border-radius:10px;font-size:1.05rem;transition:background .18s;white-space:nowrap}
 .main-nav a:hover,.main-nav a.active{background:rgba(0,151,167,.12);color:var(--accent)}
-#darkToggle{position:relative;right:auto;top:auto;transform:none;width:48px;height:48px;border-radius:24px;background:#ffffff;color:#333;border:1px solid rgba(16,24,40,.10);box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;z-index:1;font-size:1.3rem;transition:background .2s,transform .15s}
-#darkToggle:hover{transform:scale(1.05)}
-body.dark #darkToggle{background:#161f28;color:#fff;border-color:rgba(255,255,255,.10)}
+
 .nav-toggle{display:none;border:none;background:transparent;font-size:22px;cursor:pointer}
 /* Prevent header brand and nav from colliding at high zoom */
 .site-brand{min-width:0}
@@ -38,7 +36,6 @@ body.dark .lang-switch{background:transparent;border:none}
 body.dark .lang-switch .lang{color:#e6eef9;border:none}
 body.dark .lang-switch .lang:hover{background:rgba(127,216,255,.16);color:#7fd8ff}
 body.dark .lang-switch .lang.current{background:rgba(127,216,255,.22);color:#7fd8ff}
-.header-controls #darkToggle{margin-left:0}
 .header-controls .lang-switch{margin-left:0}
 body.dark .header-controls{background:transparent;border:none}
 .header-lang{margin-left:0}
@@ -51,17 +48,7 @@ body.dark .header-controls{background:transparent;border:none}
    .header-controls{gap:4px;margin-right:8px}
 }
 
-/* Mobile fixed dark toggle clone */
-#darkToggleMobile{display:none}
-@media(max-width:820px){
-   #darkToggle{display:none}
-   #darkToggleMobile{display:inline-flex;align-items:center;justify-content:center;position:fixed;right:12px;top:12px;width:44px;height:44px;border-radius:22px;background:#ffffff;color:#333;border:1px solid rgba(16,24,40,.10);box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:1000;font-size:1.2rem}
-   body.dark #darkToggleMobile{background:#161f28;color:#fff;border-color:rgba(255,255,255,.10)}
-}
-/* Desktop: pin dark toggle to top-right */
-@media(min-width:821px){
-   #darkToggle{position:fixed;right:12px;top:12px;z-index:1001}
-}
+
 
 /* ========================= Layout */
 main{max-width:var(--maxw);margin:0 auto;padding:32px 24px 80px}
@@ -391,7 +378,5 @@ body.dark .sim-modal-note{color:#e6eef9}
 
    .sim-modal-content iframe{height:60vh}
 
-   /* Mobile dark toggle: sized for header stack */
-   #darkToggleMobile{position:static;width:40px;height:40px}
-   #darkToggle{position:static;width:40px;height:40px}
+
 }
