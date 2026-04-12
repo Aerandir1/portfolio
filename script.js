@@ -392,14 +392,16 @@ renderSkills();
 /* theme toggle */
 function initThemeToggle() {
   const isEn = (document.documentElement.lang || '').toLowerCase().startsWith('en');
-  const saved = localStorage.getItem('theme');
+  // Migrate: clear old key to allow system detection
+  localStorage.removeItem('theme');
+  const saved = localStorage.getItem('theme-pref');
   if (saved === 'dark') {
     document.body.classList.add('dark');
-  } else if (!saved) {
+  } else if (saved === 'light') {
+    document.body.classList.remove('dark');
+  } else {
     // No user preference: follow system theme
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.body.classList.add('dark');
-    }
+    document.body.classList.toggle('dark', window.matchMedia('(prefers-color-scheme: dark)').matches);
   }
 
   function refreshButtons() {
@@ -415,7 +417,7 @@ function initThemeToggle() {
       btn.onclick = function (e) {
         e.stopPropagation();
         document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        localStorage.setItem('theme-pref', document.body.classList.contains('dark') ? 'dark' : 'light');
         refreshButtons();
       };
     });
@@ -423,7 +425,7 @@ function initThemeToggle() {
 
   // Listen for system theme changes (applied only when no manual override)
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) {
+    if (!localStorage.getItem('theme-pref')) {
       document.body.classList.toggle('dark', e.matches);
       refreshButtons();
     }
