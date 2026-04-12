@@ -81,6 +81,7 @@ const siteData = {
       ]},
       { category: 'Informatique', color: '#6c5ce7', sub: [
         { label: 'Langages', items: ['Python','C','Java'] },
+        { label: 'Frameworks', items: ['ROS2'] },
       ]},
       { category: 'Bureautique', color: '#00ce45ff', sub: [
         { label: 'Suite Office', items: ['Excel','Word','PowerPoint'] },
@@ -169,7 +170,8 @@ const siteData = {
         { label: 'Language', items: ['Ladder'] }
       ]},
       { category: 'IT', color: '#6c5ce7', sub: [
-        { label: 'Languages', items: ['Python','C','Java'] }
+        { label: 'Languages', items: ['Python','C','Java'] },
+        { label: 'Frameworks', items: ['ROS2'] }
       ]},
       { category: 'Office', color: '#00ce45ff', sub: [
         { label: 'Productivity', items: ['Excel','Word','PowerPoint'] },
