@@ -218,7 +218,7 @@ body.dark .header-controls{ background:transparent; border:none }
 
 /* ========================= Layout */
 main{ max-width:var(--maxw); margin:0 auto; padding:40px 28px 100px }
-section{ margin:56px 0; scroll-margin-top: 100px; }
+section{ margin:56px 0; scroll-margin-top: 100px; transition: margin .4s ease }
 
 section h2{
   font-size: 1.65rem;
@@ -234,25 +234,36 @@ section h2{
   border: 1px solid rgba(16,24,40,.06);
   border-radius: 14px;
   box-shadow: var(--shadow);
-  transition: box-shadow var(--transition), background var(--transition);
+  transition: box-shadow var(--transition), background var(--transition), margin-bottom .35s ease, border-color var(--transition);
   letter-spacing: -.01em;
 }
 section h2:hover{ box-shadow: var(--shadow-hover) }
+section:not(.collapsed) h2{ border-color: color-mix(in oklab, var(--accent) 22%, transparent) }
 
 /* Chevron before section titles */
 section h2::before{
   content: "\25B6";
-  display: inline-block;
-  margin-right: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent-light);
   color: var(--accent);
-  font-size: .85rem;
+  font-size: .75rem;
   transform: rotate(0deg);
-  transition: transform var(--transition);
-  opacity: .7;
+  transition: transform .4s cubic-bezier(.4,0,.2,1), background .25s ease;
+  flex-shrink: 0;
 }
-section:not(.collapsed) h2::before{ transform: rotate(90deg); opacity:1 }
+section:not(.collapsed) h2::before{
+  transform: rotate(90deg);
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+}
 
-body.dark section h2::before{ color: #22d3ee }
+body.dark section h2::before{ color: #22d3ee; background: rgba(34,211,238,.08) }
+body.dark section:not(.collapsed) h2::before{ background: rgba(34,211,238,.15) }
+body.dark section:not(.collapsed) h2{ border-color: rgba(34,211,238,.14) }
 body.dark section h2{
   background: rgba(21,29,39,0.85);
   border-color: rgba(255,255,255,.06);
@@ -265,20 +276,20 @@ body.dark section h2{
 .diplomas .diplomas-grid,
 .experiences .experiences-grid,
 .skills .skills-grid,
-.contact .contact-grid{ overflow:hidden; transition:max-height .4s ease; max-height:5000px }
-.about.collapsed .about-content{ max-height:0 }
-.projects.collapsed .projects-grid{ max-height:0 }
-.diplomas.collapsed .diplomas-grid{ max-height:0 }
-.experiences.collapsed .experiences-grid{ max-height:0 }
-.skills.collapsed .skills-grid{ max-height:0 }
-.contact.collapsed .contact-grid{ max-height:0 }
-
-body.no-anim .about .about-content,
-body.no-anim .projects .projects-grid,
-body.no-anim .diplomas .diplomas-grid,
-body.no-anim .experiences .experiences-grid,
-body.no-anim .skills .skills-grid,
-body.no-anim .contact .contact-grid{ transition:none }
+.contact .contact-grid{
+  overflow: hidden;
+  transition: height .5s cubic-bezier(.4,0,.2,1), opacity .35s ease;
+  opacity: 1;
+}
+.about.collapsed .about-content,
+.projects.collapsed .projects-grid,
+.diplomas.collapsed .diplomas-grid,
+.experiences.collapsed .experiences-grid,
+.skills.collapsed .skills-grid,
+.contact.collapsed .contact-grid{
+  opacity: 0;
+  pointer-events: none;
+}
 
 .about.collapsed,
 .projects.collapsed,
@@ -299,6 +310,12 @@ body.no-anim .contact .contact-grid{ transition:none }
   border: 1px solid color-mix(in oklab, var(--accent) 12%, transparent);
   border-radius: var(--radius);
   padding: 32px;
+  transition: height .5s cubic-bezier(.4,0,.2,1), opacity .35s ease, padding .45s cubic-bezier(.4,0,.2,1), border-color .35s ease;
+}
+.about.collapsed .about-content{
+  padding-top: 0;
+  padding-bottom: 0;
+  border-color: transparent;
 }
 body.dark .about .about-content{
   background: linear-gradient(135deg, rgba(34,211,238,.06), rgba(34,211,238,.02));

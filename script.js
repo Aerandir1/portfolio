@@ -402,40 +402,95 @@ function initTheme() {
 }
 initTheme();
 
+/* ========================= Section expand / collapse helpers ========================= */
+const _sectionContentMap = {
+  about: '.about-content',
+  projects: '.projects-grid',
+  diplomas: '.diplomas-grid',
+  experiences: '.experiences-grid',
+  skills: '.skills-grid',
+  contact: '.contact-grid'
+};
+
+function _getSectionContent(section) {
+  for (const [cls, sel] of Object.entries(_sectionContentMap)) {
+    if (section.classList.contains(cls)) return section.querySelector(sel);
+  }
+  return null;
+}
+
+function expandSection(section) {
+  if (!section || !section.classList.contains('collapsed')) return;
+  const content = _getSectionContent(section);
+  const header = section.querySelector('h2');
+  if (!content) return;
+
+  section.classList.remove('collapsed');
+  if (header) header.setAttribute('aria-expanded', 'true');
+
+  // Animate height: 0 → scrollHeight → auto
+  content.style.height = '0px';
+  content.offsetHeight; // force reflow
+  const target = content.scrollHeight;
+  content.style.height = target + 'px';
+
+  const onEnd = (e) => {
+    if (e.propertyName !== 'height') return;
+    content.style.height = 'auto';
+    content.removeEventListener('transitionend', onEnd);
+  };
+  content.addEventListener('transitionend', onEnd);
+}
+
+function collapseSection(section, animate) {
+  if (!section || section.classList.contains('collapsed')) return;
+  const content = _getSectionContent(section);
+  const header = section.querySelector('h2');
+  if (!content) return;
+
+  if (animate === false) {
+    section.classList.add('collapsed');
+    content.style.height = '0';
+    if (header) header.setAttribute('aria-expanded', 'false');
+    return;
+  }
+
+  // Set explicit height, then transition to 0
+  content.style.height = content.scrollHeight + 'px';
+  content.offsetHeight; // force reflow
+  content.style.height = '0';
+  section.classList.add('collapsed');
+  if (header) header.setAttribute('aria-expanded', 'false');
+}
+
 /* simple section toggles (sections only) */
 function initSectionToggles() {
-  const sections = [
-    { sel: '.about', grid: '.about-content', title: 'À propos' },
-    { sel: '.projects', grid: '.projects-grid', title: 'Mes Projets' },
-    { sel: '.experiences', grid: '.experiences-grid', title: 'Expériences professionnelles' },
-    { sel: '.diplomas', grid: '.diplomas-grid', title: 'Diplômes et Formations' },
-    { sel: '.skills', grid: '.skills-grid', title: 'Compétences' },
-    { sel: '.contact', grid: '.contact-grid', title: 'Contact' }
-  ];
-  sections.forEach(s => {
-    const section = document.querySelector(s.sel);
+  ['.about', '.projects', '.experiences', '.diplomas', '.skills', '.contact'].forEach(sel => {
+    const section = document.querySelector(sel);
     if (!section) return;
     const header = section.querySelector('h2');
-    const content = section.querySelector(s.grid);
+    const content = _getSectionContent(section);
     if (!header || !content) return;
-    // Accessible attributes
-    header.setAttribute('role','button');
-    header.setAttribute('tabindex','0');
-    // Start expanded for About; others collapsed by default
-    const isAbout = section.classList.contains('about');
-    if (isAbout) {
-      header.setAttribute('aria-expanded','true');
+
+    header.setAttribute('role', 'button');
+    header.setAttribute('tabindex', '0');
+
+    // Initial state (no animation)
+    if (section.classList.contains('about')) {
       section.classList.remove('collapsed');
+      header.setAttribute('aria-expanded', 'true');
+      content.style.height = 'auto';
     } else {
-      header.setAttribute('aria-expanded','false');
-      section.classList.add('collapsed');
+      collapseSection(section, false);
     }
-    // Click handler
+
     header.addEventListener('click', () => {
-      const collapsed = section.classList.toggle('collapsed');
-      header.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      if (section.classList.contains('collapsed')) {
+        expandSection(section);
+      } else {
+        collapseSection(section);
+      }
     });
-    // Keyboard support
     header.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
     });
@@ -489,29 +544,23 @@ function initHeaderNav() {
 }
 initHeaderNav();
 
-// Exclusive open via header menu: open target section, collapse others
+// Exclusive open via header menu: open target section with animation
 function initExclusiveSectionControl() {
   const nav = document.querySelector('.main-nav'); if (!nav) return;
   const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
-  const sections = [
-    { id: 'about-me', el: document.getElementById('about-me'), gridSel: '.about-content' },
-    { id: 'projects', el: document.querySelector('.projects'), gridSel: '.projects-grid' },
-    { id: 'experiences', el: document.querySelector('.experiences'), gridSel: '.experiences-grid' },
-    { id: 'diplomas', el: document.querySelector('.diplomas'), gridSel: '.diplomas-grid' },
-    { id: 'skills', el: document.querySelector('.skills'), gridSel: '.skills-grid' }
+  const sectionEls = [
+    { id: 'about-me', el: document.getElementById('about-me') },
+    { id: 'projects', el: document.querySelector('.projects') },
+    { id: 'experiences', el: document.querySelector('.experiences') },
+    { id: 'diplomas', el: document.querySelector('.diplomas') },
+    { id: 'skills', el: document.querySelector('.skills') },
+    { id: 'contact', el: document.querySelector('.contact') }
   ];
-  function setOpenWithoutClosingOthers(targetId) {
-    const target = sections.find(s => s.id === targetId);
-    if (target && target.el) {
-      const header = target.el.querySelector('h2');
-      target.el.classList.remove('collapsed');
-      if (header) header.setAttribute('aria-expanded','true');
-    }
-  }
   links.forEach(a => {
     a.addEventListener('click', () => {
       const id = a.getAttribute('href').replace('#','');
-      setOpenWithoutClosingOthers(id);
+      const match = sectionEls.find(s => s.id === id);
+      if (match && match.el) expandSection(match.el);
     });
   });
 }
