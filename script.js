@@ -393,7 +393,14 @@ renderSkills();
 function initThemeToggle() {
   const isEn = (document.documentElement.lang || '').toLowerCase().startsWith('en');
   const saved = localStorage.getItem('theme');
-  if (saved === 'dark') document.body.classList.add('dark');
+  if (saved === 'dark') {
+    document.body.classList.add('dark');
+  } else if (!saved) {
+    // No user preference: follow system theme
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark');
+    }
+  }
 
   function refreshButtons() {
     const isDark = document.body.classList.contains('dark');
@@ -413,6 +420,14 @@ function initThemeToggle() {
       };
     });
   }
+
+  // Listen for system theme changes (applied only when no manual override)
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      document.body.classList.toggle('dark', e.matches);
+      refreshButtons();
+    }
+  });
 
   refreshButtons();
 }
