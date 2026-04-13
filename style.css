@@ -714,13 +714,18 @@ body.dark .skill-group{ background: #151d27; border-color: rgba(255,255,255,.05)
   justify-content: center;
   border-radius: 14px;
   background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 10%, transparent), color-mix(in oklab, var(--accent) 18%, transparent));
-  font-size: 1.3rem;
+  color: var(--accent);
   flex-shrink: 0;
   transition: transform var(--transition);
+}
+.contact-ico svg{
+  width: 24px;
+  height: 24px;
 }
 .contact-card:hover .contact-ico{ transform: scale(1.08) }
 body.dark .contact-ico{
   background: linear-gradient(135deg, rgba(34,211,238,.08), rgba(34,211,238,.16));
+  color: #22d3ee;
 }
 .contact-card strong{ font-weight:700; font-size:.98rem }
 .contact-card .muted{ color:var(--muted); font-size:.88rem }
