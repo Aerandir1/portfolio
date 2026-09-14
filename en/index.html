@@ -3,122 +3,212 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio - Lilian Conan</title>
+  <title>Lilian Conan — Mechatronics Engineering Student</title>
+  <meta name="description" content="Portfolio of Lilian Conan, mechatronics engineering student at ENSIBS Lorient. Embedded systems, electronics, CAD and robotics.">
+  <meta name="author" content="Lilian Conan">
+  <link rel="canonical" href="https://lilianconan.fr/en/">
+  <link rel="alternate" hreflang="fr" href="/fr/">
+  <link rel="alternate" hreflang="en" href="/en/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Lilian Conan — Mechatronics Engineering Student">
+  <meta property="og:description" content="Embedded systems, electronics, CAD and robotics.">
+  <meta property="og:image" content="/images/photo.png">
+  <meta property="og:locale" content="en_GB">
   <link rel="icon" type="image/svg+xml" href="/images/logo/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
   <header class="site-header">
-    <div class="site-brand">
-      <div class="logo" aria-hidden="true">
-        <img src="/images/photo.png" alt="Profile photo Lilian Conan" />
-      </div>
-      <div class="brand-text">
-        <h1 class="brand-name">Lilian <span class="surname">Conan</span></h1>
-        <p class="brand-sub">Engineering Student - Mechatronics</p>
-      </div>
-    </div>
+    <div class="shell header-inner">
+      <a class="brand" href="#about" aria-label="Lilian Conan — back to top">
+        <span class="brand-mark" aria-hidden="true">LC</span>
+        <span class="brand-name">
+          Lilian Conan
+          <span class="brand-role">Engineering student · Mechatronics</span>
+        </span>
+      </a>
 
-    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#path">Background</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
 
-    <nav class="main-nav" aria-label="Main navigation">
-      <ul>
-        <li><a href="#about-me" data-target="about-me">About</a></li>
-        <li><a href="#diplomas" data-target="diplomas">Education</a></li>
-        <li><a href="#experiences" data-target="experiences">Experience</a></li>
-        <li><a href="#projects" data-target="projects">Projects</a></li>
-        <li><a href="#skills" data-target="skills">Skills</a></li>
-        <li><a href="#contact" data-target="contact">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="header-controls">
-      <span class="lang-switch header-lang" aria-label="Change language">
-        <a href="/fr/" class="lang">FR</a>
-        <span class="sep">|</span>
-        <a href="/en/" class="lang current" aria-current="true">EN</a>
-      </span>
+      <div class="header-tools">
+        <span class="lang-switch">
+          <a href="/fr/" hreflang="fr">FR</a>
+          <a href="/en/" class="current" aria-current="page" hreflang="en">EN</a>
+        </span>
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+          <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section id="about-me" class="about">
-      <h2>About</h2>
-      <div class="about-content" id="aboutContent">
-        <div class="hero-layout">
-          <div class="hero-photo">
-            <img src="/images/photo.png" alt="Profile photo Lilian Conan" />
-          </div>
+  <main id="main">
+    <!-- ================= Hero / About ================= -->
+    <section class="hero" id="about" aria-labelledby="hero-title">
+      <div class="shell">
+        <div class="hero-grid">
           <div class="hero-text">
-            <p>
-              My name is Lilian Conan, I am 23, studying at ENSIBS Lorient in mechatronics. I have built skills in software,
-              electronics, mechanics, and more through hands-on projects. I enjoy turning ideas into tangible builds, valuing
-              rigor, curiosity, and teamwork. I want to keep growing technically and personally through new challenges.
+            <p class="hero-kicker">
+              <span class="hero-dot" aria-hidden="true"></span>
+              Engineering student · ENSIBS Lorient
+            </p>
+            <h1 id="hero-title">
+              <span class="line">Lilian Conan</span>
+              <span class="line">Mechatronics &amp; <span class="accent">embedded</span></span>
+            </h1>
+            <p class="hero-lead">
+              I design complete systems combining software, electronics and mechanics.
+              From idea to working prototype: 3D modelling, sensor and actuator selection,
+              optimised embedded code and clean interfaces. Reliable, readable and maintainable implementations.
             </p>
             <div class="hero-actions">
-              <a class="cv-btn" href="/attach/cv_lilian_conan_en.pdf" target="_blank" rel="noopener">
-                View my CV
+              <a class="btn btn-primary" href="/attach/cv_lilian_conan_en.pdf" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                View resume
+              </a>
+              <a class="btn btn-ghost" href="#contact">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 6 10-6"/></svg>
+                Get in touch
               </a>
             </div>
+          </div>
+
+          <div class="hero-portrait">
+            <img src="/images/photo.png" alt="Portrait of Lilian Conan" width="340" height="425" fetchpriority="high">
+          </div>
+        </div>
+
+        <dl class="hero-facts">
+          <div class="fact"><dt>School</dt><dd>ENSIBS Lorient</dd></div>
+          <div class="fact"><dt>Programme</dt><dd>Engineering 2022–2027</dd></div>
+          <div class="fact"><dt>Focus</dt><dd>Embedded · Electronics · CAD</dd></div>
+          <div class="fact"><dt>Location</dt><dd>Lorient, France</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ================= Projects ================= -->
+    <section class="section section-alt" id="projects" aria-labelledby="projects-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-index">01 — Work</p>
+            <h2 id="projects-title">My projects</h2>
+          </div>
+          <p class="section-sub">Systems designed end to end: electronics, mechanics and embedded code.</p>
+        </div>
+        <div class="bento" id="projectsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ================= Background ================= -->
+    <section class="section" id="path" aria-labelledby="path-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-index">02 — Background</p>
+            <h2 id="path-title">Education and experience</h2>
+          </div>
+          <p class="section-sub">A scientific education backed by hands-on experience, in France and abroad.</p>
+        </div>
+
+        <div class="path-grid">
+          <div>
+            <h3 class="path-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+              Education
+            </h3>
+            <div class="timeline" id="diplomasTimeline"></div>
+          </div>
+          <div>
+            <h3 class="path-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              Professional experience
+            </h3>
+            <div class="timeline" id="experiencesTimeline"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="timeline-side">
-      <section id="diplomas" class="diplomas">
-        <h2>Education</h2>
-        <div class="diplomas-grid" id="diplomasGrid"></div>
-      </section>
-      <section id="experiences" class="experiences">
-        <h2>Professional Experience</h2>
-        <div class="experiences-grid" id="experiencesGrid"></div>
-      </section>
-    </div>
-
-    <section id="projects" class="projects">
-      <h2>My Projects</h2>
-      <div class="projects-grid" id="projectsGrid"></div>
-    </section>
-
-    <section id="skills" class="skills">
-      <h2>Skills</h2>
-      <div class="skills-inner">
+    <!-- ================= Skills ================= -->
+    <section class="section section-alt" id="skills" aria-labelledby="skills-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="section-index">03 — Toolbox</p>
+            <h2 id="skills-title">Skills</h2>
+          </div>
+          <p class="section-sub">The tools and languages I work with daily, from CAD to embedded code.</p>
+        </div>
         <div class="skills-grid" id="skillsGrid"></div>
       </div>
     </section>
 
-    <section id="contact" class="contact">
-      <h2>Contact</h2>
-      <div class="contact-grid">
-        <a class="contact-card" href="mailto:lilian.conan.2@gmail.com?subject=Contact%20from%20portfolio">
-          <span class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 6 10-6"/></svg></span>
-          <div>
-            <strong>Email</strong>
-            <div class="muted">Click to email me</div>
-          </div>
-        </a>
-        <a class="contact-card" href="https://www.linkedin.com/in/lilian-conan/" target="_blank" rel="noopener">
-          <span class="contact-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
-          <div>
-            <strong>LinkedIn</strong>
-            <div class="muted">@lilian-conan</div>
-          </div>
-        </a>
-        <a class="contact-card" href="https://github.com/Aerandir1" target="_blank" rel="noopener">
-          <span class="contact-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>
-          <div>
-            <strong>GitHub</strong>
-            <div class="muted">@Aerandir1</div>
-          </div>
-        </a>
-        <div class="contact-card">
-          <span class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-          <div>
-            <strong>Location</strong>
-            <div class="muted">Lorient, France</div>
+    <!-- ================= Contact ================= -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="shell contact-layout">
+        <div class="contact-pitch">
+          <p class="section-index">04 — Contact</p>
+          <h2 id="contact-title">Let's talk about your project</h2>
+          <p>
+            Internship, apprenticeship or just a technical chat: feel free to reach out.
+            I usually reply within a few days.
+          </p>
+          <a class="btn btn-primary" href="mailto:lilian.conan.2@gmail.com?subject=Contact%20from%20the%20portfolio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 6 10-6"/></svg>
+            Send an email
+          </a>
+        </div>
+
+        <div class="contact-list">
+          <a class="contact-card" href="mailto:lilian.conan.2@gmail.com?subject=Contact%20from%20the%20portfolio">
+            <span class="contact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 6 10-6"/></svg></span>
+            <span>
+              <strong>Email</strong>
+              <span class="muted">lilian.conan.2@gmail.com</span>
+            </span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+
+          <a class="contact-card" href="https://www.linkedin.com/in/lilian-conan/" target="_blank" rel="noopener">
+            <span class="contact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
+            <span>
+              <strong>LinkedIn</strong>
+              <span class="muted">@lilian-conan</span>
+            </span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+
+          <a class="contact-card" href="https://github.com/Aerandir1" target="_blank" rel="noopener">
+            <span class="contact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>
+            <span>
+              <strong>GitHub</strong>
+              <span class="muted">@Aerandir1</span>
+            </span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+
+          <div class="contact-card">
+            <span class="contact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span>
+              <strong>Location</strong>
+              <span class="muted">Lorient, France</span>
+            </span>
           </div>
         </div>
       </div>
@@ -126,7 +216,15 @@
   </main>
 
   <footer class="site-footer">
-    &copy; 2026 Lilian Conan &middot; Portfolio
+    <div class="shell footer-inner">
+      <p>&copy; 2026 Lilian Conan — Portfolio</p>
+      <nav class="footer-links" aria-label="External links">
+        <a href="/attach/cv_lilian_conan_en.pdf" target="_blank" rel="noopener">Resume</a>
+        <a href="https://www.linkedin.com/in/lilian-conan/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/Aerandir1" target="_blank" rel="noopener">GitHub</a>
+        <a href="/fr/" hreflang="fr">Français</a>
+      </nav>
+    </div>
   </footer>
 
   <script src="/script.js"></script>
