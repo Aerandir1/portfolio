@@ -14,7 +14,7 @@ const siteData = {
       { 
         title: "Capteur de température connecté", 
         description: "Capteur de température connecté utilisant un microcontrôleur ESP32, le bus I2C et MQTT. Alimenté par batterie, ce projet s'intègre dans un système domotique global.", 
-        details: `Ce projet consiste à concevoir et réaliser un capteur de température connecté, basé sur un microcontrôleur ESP32. Le dispositif mesure la température ambiante à l’aide d’un capteur numérique précis, communiquant via le bus I2C, puis transmet les données en temps réel via le protocole MQTT à un serveur central ou une application mobile. L’ESP32 est programmé en C pour assurer la gestion du capteur, la connexion Wi-Fi et la communication avec le broker MQTT. Le projet inclut la conception d’un circuit imprimé (PCB) sur mesure pour intégrer proprement les composants électroniques, ainsi que la fabrication d’un boîtier personnalisé en impression 3D pour protéger l’ensemble et faciliter l’installation dans différents environnements. Ce capteur fait partie d’un projet plus global de domotique, permettant de surveiller la température à distance, il peut a etre integrer a un serveur domotique comme Hom Assistant ou autre. Ce projet m’a permis d’approfondir la programmation embarquée, la communication IoT et la conception électronique.`,
+        details: `Ce projet consiste à concevoir et réaliser un capteur de température connecté, basé sur un microcontrôleur ESP32. Le dispositif mesure la température ambiante à l’aide d’un capteur numérique précis, communiquant via le bus I2C, puis transmet les données en temps réel via le protocole MQTT à un serveur central ou une application mobile. L’ESP32 est programmé en C pour assurer la gestion du capteur, la connexion Wi-Fi et la communication avec le broker MQTT. Le projet inclut la conception d’un circuit imprimé (PCB) sur mesure pour intégrer proprement les composants électroniques, ainsi que la fabrication d’un boîtier personnalisé en impression 3D pour protéger l’ensemble et faciliter l’installation dans différents environnements. Ce capteur fait partie d’un projet plus global de domotique, permettant de surveiller la température à distance ; il peut être intégré à un serveur domotique comme Home Assistant. Ce projet m’a permis d’approfondir la programmation embarquée, la communication IoT et la conception électronique.`,
         image: "/images/mqtt.png",
         techs: ["ESP32","MQTT","I2C","PCB","Impression 3D"]
       },
@@ -236,6 +236,7 @@ function renderProjects() {
     // Click card to enter fullscreen (except on open-sim button)
     card.addEventListener('click', (e) => {
       if (e.target.classList.contains('project-action-btn')) return;
+      if (card.classList.contains('fullscreen')) return;
       enterFullscreenProject(card);
     });
     const actionButton = card.querySelector('.project-action-btn');
@@ -272,6 +273,9 @@ function enterFullscreenProject(card) {
   document.querySelectorAll('.project-card').forEach(c => c.classList.remove('fullscreen'));
   card.classList.add('fullscreen');
   const closeBtn = card.querySelector('.project-close'); if (closeBtn) closeBtn.style.display = 'inline-flex';
+  requestAnimationFrame(() => {
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 
 function exitFullscreenProject(card) {
@@ -365,11 +369,12 @@ function openProjectModal({ title, url, note = '' }) {
       <button class='sim-modal-close' aria-label='Fermer'>&times;</button>
       <h2>${title}</h2>
       ${note ? `<p class="sim-modal-note">${note}</p>` : ''}
-      <iframe src="${url}" scrolling="no" style="border:0;width:100%;max-width:1000px;aspect-ratio: 16 / 9; height: auto; display:block; background: transparent;"></iframe>
+      <iframe src="${url}" scrolling="no" title="${title}"></iframe>
     </div>
   `;
   modal.querySelector('.sim-modal-close').addEventListener('click', closeProjectModal);
   modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
   setTimeout(() => { modal.classList.add('open'); }, 10);
 }
 
@@ -377,9 +382,19 @@ function closeProjectModal() {
   const modal = document.querySelector('.sim-modal');
   if (modal) {
     modal.classList.remove('open');
+    document.body.style.overflow = '';
     setTimeout(() => { modal.style.display = 'none'; }, 220);
   }
 }
+
+// Escape closes modal first, then fullscreen project card
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const modal = document.querySelector('.sim-modal');
+  if (modal && modal.classList.contains('open')) { closeProjectModal(); return; }
+  const fullCard = document.querySelector('.project-card.fullscreen');
+  if (fullCard) exitFullscreenProject(fullCard);
+});
 
 // =========================
 //   INIT
@@ -475,14 +490,10 @@ function initSectionToggles() {
     header.setAttribute('role', 'button');
     header.setAttribute('tabindex', '0');
 
-    // Initial state (no animation)
-    if (section.classList.contains('about')) {
-      section.classList.remove('collapsed');
-      header.setAttribute('aria-expanded', 'true');
-      content.style.height = 'auto';
-    } else {
-      collapseSection(section, false);
-    }
+    // Initial state: all sections open (no animation)
+    section.classList.remove('collapsed');
+    header.setAttribute('aria-expanded', 'true');
+    content.style.height = 'auto';
 
     header.addEventListener('click', () => {
       if (section.classList.contains('collapsed')) {
@@ -565,51 +576,6 @@ function initExclusiveSectionControl() {
   });
 }
 initExclusiveSectionControl();
-
-// =========================
-//   DYNAMIC NAV FROM PAGE ORDER
-// =========================
-function initDynamicNav() {
-  const nav = document.querySelector('.main-nav'); if (!nav) return;
-  const ul = nav.querySelector('ul'); if (!ul) return;
-  // Find sections in page order
-  const map = [];
-  const mainEl = document.querySelector('main');
-  const allowed = new Set(['about-me','projects','experiences','diplomas','skills','contact']);
-  const orderedSections = mainEl ? Array.from(mainEl.querySelectorAll('section[id]')) : [];
-  orderedSections.forEach(sec => {
-    if (!allowed.has(sec.id)) return;
-    const h2 = sec.querySelector('h2');
-    const label = (h2 && h2.textContent && h2.textContent.trim()) || (sec.id === 'contact' ? 'Contact' : sec.id);
-    map.push({ id: sec.id, label });
-  });
-
-  // Rebuild UL links in the same order
-  ul.innerHTML = '';
-  map.forEach(({ id, label }) => {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = `#${id}`; a.dataset.target = id; a.textContent = label;
-    li.appendChild(a); ul.appendChild(li);
-  });
-
-  // Re-wire header nav behaviors on the new links
-  initHeaderNav();
-  // Re-wire exclusive section control on the new links
-  initExclusiveSectionControl();
-}
-
-// Observe changes to headings/order and update nav automatically
-function observePageForNavChanges() {
-  const main = document.querySelector('main'); if (!main) return;
-  let timer = null;
-  const refresh = () => { clearTimeout(timer); timer = setTimeout(initDynamicNav, 120); };
-  const observer = new MutationObserver(refresh);
-  observer.observe(main, { childList: true, subtree: true, characterData: true });
-  // Initial build
-  initDynamicNav();
-}
-observePageForNavChanges();
 
 // Re-enable transitions shortly after setup
 setTimeout(() => { document.body.classList.remove('no-anim'); }, 250);
