@@ -11,6 +11,9 @@ const TERM_I18N = {
     title: 'Terminal',
     open: 'Ouvrir le terminal',
     close: 'Fermer le terminal',
+    minimize: 'Réduire le terminal',
+    maximize: 'Agrandir le terminal',
+    restore: 'Restaurer la taille',
     inputLabel: 'Commande',
     welcome: [
       "Bienvenue sur le terminal de Lilian Conan.",
@@ -64,6 +67,9 @@ const TERM_I18N = {
     title: 'Terminal',
     open: 'Open terminal',
     close: 'Close terminal',
+    minimize: 'Minimize terminal',
+    maximize: 'Maximize terminal',
+    restore: 'Restore size',
     inputLabel: 'Command',
     welcome: [
       "Welcome to Lilian Conan's terminal.",
@@ -221,7 +227,7 @@ let termInput = null;
 let termPrompt = null;
 let termLastFocused = null;
 
-const termState = { cwd: HOME, history: [], histIndex: 0, draft: '' };
+const termState = { open: false, cwd: HOME, history: [], histIndex: 0, draft: '' };
 
 function promptHtml() {
   return `<span class="t-user">lilian@portfolio</span>:<span class="t-path">${esc(prettyPath(termState.cwd))}</span>$`;
@@ -247,9 +253,12 @@ function ensureTerminal() {
   termEl.setAttribute('aria-label', T.title);
   termEl.innerHTML = `
     <div class="terminal-bar">
-      <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="terminal-dots">
+        <button class="t-dot t-dot-close" type="button" aria-label="${esc(T.close)}" title="${esc(T.close)}"></button>
+        <button class="t-dot t-dot-min" type="button" aria-label="${esc(T.minimize)}" title="${esc(T.minimize)}"></button>
+        <button class="t-dot t-dot-max" type="button" aria-label="${esc(T.maximize)}" title="${esc(T.maximize)}"></button>
+      </span>
       <span class="terminal-title">lilian@portfolio: ~</span>
-      <button class="terminal-close" type="button" aria-label="${esc(T.close)}">${icon('close')}</button>
     </div>
     <div class="terminal-body">
       <div class="terminal-out" aria-live="polite"></div>
@@ -266,7 +275,10 @@ function ensureTerminal() {
   termPrompt = termEl.querySelector('.t-prompt');
   termPrompt.innerHTML = promptHtml();
 
-  termEl.querySelector('.terminal-close').addEventListener('click', closeTerminal);
+  termEl.querySelector('.t-dot-close').addEventListener('click', closeTerminal);
+  termEl.querySelector('.t-dot-min').addEventListener('click', closeTerminal);
+  termEl.querySelector('.t-dot-max').addEventListener('click', toggleMaximize);
+  initDrag(termEl.querySelector('.terminal-bar'));
   termEl.querySelector('.terminal-body').addEventListener('click', () => {
     if (!window.getSelection().toString()) termInput.focus();
   });
@@ -288,22 +300,74 @@ function openTerminal() {
   if (typeof closeModal === 'function' && modalEl?.classList.contains('visible')) closeModal();
   const el = ensureTerminal();
   termLastFocused = document.activeElement;
+  termState.open = true;
   el.classList.add('visible');
-  requestAnimationFrame(() => el.classList.add('open'));
+  requestAnimationFrame(() => { if (termState.open) el.classList.add('open'); });
   document.querySelectorAll('.terminal-toggle').forEach(b => b.setAttribute('aria-expanded', 'true'));
   termInput.focus();
 }
 
 function closeTerminal() {
   if (!termEl) return;
+  termState.open = false;
   termEl.classList.remove('open');
   document.querySelectorAll('.terminal-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
-  setTimeout(() => { if (!termEl.classList.contains('open')) termEl.classList.remove('visible'); }, 240);
+  setTimeout(() => { if (!termState.open) termEl.classList.remove('visible'); }, 240);
   if (termLastFocused && document.contains(termLastFocused)) termLastFocused.focus();
 }
 
+/* Agrandissement plein écran (pastille verte ou double-clic sur la barre) */
+function toggleMaximize() {
+  const max = termEl.classList.toggle('maximized');
+  const btn = termEl.querySelector('.t-dot-max');
+  btn.setAttribute('aria-label', max ? T.restore : T.maximize);
+  btn.title = max ? T.restore : T.maximize;
+  termInput.focus();
+}
+
+/* Déplacement de la fenêtre par sa barre de titre, borné à l'écran */
+function clampPosition(left, top) {
+  const maxLeft = window.innerWidth - termEl.offsetWidth;
+  const maxTop = window.innerHeight - termEl.offsetHeight;
+  return [Math.max(0, Math.min(left, maxLeft)), Math.max(0, Math.min(top, maxTop))];
+}
+
+function placeTerminal(left, top) {
+  [left, top] = clampPosition(left, top);
+  Object.assign(termEl.style, { left: `${left}px`, top: `${top}px`, right: 'auto', bottom: 'auto' });
+}
+
+function initDrag(bar) {
+  let start = null;
+
+  bar.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || e.target.closest('button')) return;
+    if (termEl.classList.contains('maximized') || window.matchMedia('(max-width: 680px)').matches) return;
+    const rect = termEl.getBoundingClientRect();
+    start = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    bar.setPointerCapture(e.pointerId);
+    termEl.classList.add('dragging');
+  });
+  bar.addEventListener('pointermove', e => {
+    if (start) placeTerminal(e.clientX - start.x, e.clientY - start.y);
+  });
+  const stop = () => {
+    if (!start) return;
+    start = null;
+    termEl.classList.remove('dragging');
+  };
+  bar.addEventListener('pointerup', stop);
+  bar.addEventListener('pointercancel', stop);
+  bar.addEventListener('dblclick', e => { if (!e.target.closest('button')) toggleMaximize(); });
+
+  // Garde la fenêtre visible si l'écran rétrécit
+  window.addEventListener('resize', () => {
+    if (termEl.style.left) placeTerminal(parseFloat(termEl.style.left), parseFloat(termEl.style.top));
+  });
+}
+
 function toggleTerminal() {
-  termEl?.classList.contains('open') ? closeTerminal() : openTerminal();
+  termState.open ? closeTerminal() : openTerminal();
 }
 
 function scrollToEnd() {
