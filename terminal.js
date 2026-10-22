@@ -51,7 +51,7 @@ const TERM_I18N = {
     themeSet: t => `Thème : ${t}`,
     themeUsage: 'usage : theme <light|dark>',
     langUsage: 'usage : lang <fr|en>',
-    whoami: 'lilian — étudiant ingénieur en mécatronique (ENSIBS Lorient)',
+    whoami: 'lilian — étudiant ingénieur en mécatronique (ENSIBS Lorient), alternant chez Lacroix Electronics',
     dirs: { projects: 'projets', path: 'parcours' },
     files: {
       about: 'a_propos.txt', contact: 'contact.txt', skills: 'competences.txt',
@@ -107,7 +107,7 @@ const TERM_I18N = {
     themeSet: t => `Theme: ${t}`,
     themeUsage: 'usage: theme <light|dark>',
     langUsage: 'usage: lang <fr|en>',
-    whoami: 'lilian — mechatronics engineering student (ENSIBS Lorient)',
+    whoami: 'lilian — mechatronics engineering student (ENSIBS Lorient), apprentice at Lacroix Electronics',
     dirs: { projects: 'projects', path: 'path' },
     files: {
       about: 'about.txt', contact: 'contact.txt', skills: 'skills.txt',
@@ -589,7 +589,8 @@ const COMMANDS = {
       `<span class="t-user">lilian</span>@<span class="t-user">portfolio</span>`,
       '-----------------',
       `<span class="t-key">OS</span>: Portfolio Linux x86_64`,
-      `<span class="t-key">Host</span>: ENSIBS Lorient`,
+      `<span class="t-key">Host</span>: Lacroix Electronics`,
+      `<span class="t-key">${lang === 'en' ? 'School' : 'École'}</span>: ENSIBS Lorient`,
       `<span class="t-key">Shell</span>: lsh 1.0`,
       `<span class="t-key">${lang === 'en' ? 'Field' : 'Domaine'}</span>: ${lang === 'en' ? 'Mechatronics' : 'Mécatronique'}`,
       `<span class="t-key">${lang === 'en' ? 'Languages' : 'Langages'}</span>: Python, C, Java`,
