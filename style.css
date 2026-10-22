@@ -943,6 +943,134 @@ body.no-anim *::before,
 body.no-anim *::after { transition: none !important; animation: none !important; }
 
 /* ==========================================================================
+   13 bis. Terminal Linux simulé
+   ========================================================================== */
+.terminal-toggle {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), background-color var(--t-fast);
+}
+.terminal-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.terminal-toggle[aria-expanded="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.terminal-toggle svg { width: 18px; height: 18px; }
+
+.terminal {
+  --t-bg: #0c0c0f;
+  --t-bar: #18181c;
+  --t-fg: #e4e4e7;
+  --t-muted: #8b8b94;
+  --t-green: #4ade80;
+  --t-blue: #60a5fa;
+  --t-red: #f87171;
+  --t-yellow: #facc15;
+
+  color-scheme: dark;
+
+  position: fixed;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 1100;
+  width: min(720px, calc(100vw - 2 * var(--gutter)));
+  height: min(460px, calc(100vh - var(--header-h) - 2 * var(--gutter)));
+  display: none;
+  flex-direction: column;
+  background: var(--t-bg);
+  color: var(--t-fg);
+  border: 1px solid #27272a;
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .45);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: .86rem;
+  line-height: 1.55;
+  opacity: 0;
+  transform: translateY(16px) scale(.98);
+  transition: opacity var(--t), transform var(--t-slow);
+}
+.terminal.visible { display: flex; }
+.terminal.open { opacity: 1; transform: none; }
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px 8px 8px 14px;
+  background: var(--t-bar);
+  border-bottom: 1px solid #27272a;
+}
+.terminal-dots { display: flex; gap: 6px; }
+.terminal-dots i { width: 11px; height: 11px; border-radius: 50%; background: #3f3f46; }
+.terminal-dots i:nth-child(1) { background: #ff5f57; }
+.terminal-dots i:nth-child(2) { background: #febc2e; }
+.terminal-dots i:nth-child(3) { background: #28c840; }
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  font-size: .78rem;
+  color: var(--t-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.terminal-close {
+  display: grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--t-muted);
+  cursor: pointer;
+}
+.terminal-close:hover { background: #27272a; color: var(--t-fg); }
+.terminal-close svg { width: 15px; height: 15px; }
+
+.terminal-body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px 16px 16px;
+  cursor: text;
+}
+.t-line { white-space: pre-wrap; word-break: break-word; }
+.terminal-form { display: flex; gap: .6ch; }
+.t-prompt { white-space: nowrap; }
+.terminal-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--t-fg);
+  font: inherit;
+  caret-color: var(--t-green);
+}
+.t-user { color: var(--t-green); font-weight: 600; }
+.t-path, .t-dir { color: var(--t-blue); font-weight: 600; }
+.t-cmd, .t-key { color: var(--t-yellow); }
+.t-exec { color: var(--t-green); }
+.t-logo { color: var(--t-blue); }
+.t-err { color: var(--t-red); }
+.t-muted { color: var(--t-muted); }
+
+@media (max-width: 680px) {
+  .terminal {
+    inset: var(--header-h) 0 0 0;
+    width: 100%; height: auto;
+    border-radius: 0;
+    border: none;
+    font-size: .8rem;
+  }
+}
+
+/* ==========================================================================
    14. Responsive
    ========================================================================== */
 @media (max-width: 1024px) {
@@ -1029,7 +1157,7 @@ body.no-anim *::after { transition: none !important; animation: none !important;
 }
 
 @media print {
-  .site-header, .nav-toggle, .modal, .hero-actions, .site-footer { display: none !important; }
+  .site-header, .nav-toggle, .modal, .terminal, .hero-actions, .site-footer { display: none !important; }
   body { background: #fff; color: #000; }
   .reveal { opacity: 1; transform: none; }
 }
